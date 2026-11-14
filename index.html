@@ -1,0 +1,1577 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MELTING POINT</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/MonadABXY/mona-font/web/mona.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Redaction+70:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: "Redaction 70 Fallback";
+      src: url("https://cdn.jsdelivr.net/npm/@fontsource/redaction-70/files/redaction-70-latin-400-normal.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; overflow: hidden; background: #fff; color: #222; }
+    body { font-family: "Mona12", sans-serif; }
+    .page {
+      position: relative;
+      width: min(100%, 1440px);
+      height: 100vh;
+      height: 100dvh;
+      container-type: size;
+      isolation: isolate;
+      --line: #68646a;
+      --skull-top: max(15cqh, 64px);
+      --skull-width: min(31cqw, 37cqh);
+      --shark-left: max(-9cqw, -9cqh);
+      --shark-width: min(69cqh, 83cqw);
+    }
+    .shark {
+      position: absolute;
+      display: block;
+      top: 2%;
+      left: var(--shark-left);
+      width: var(--shark-width);
+      height: auto;
+    }
+    .links {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .links path { fill: none; stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+    .skull-panel { position: absolute; left: clamp(17cqw, calc(var(--shark-left) + var(--shark-width) * .64), 39cqw); top: var(--skull-top); width: var(--skull-width); }
+    .quote {
+      position: absolute;
+      inset: auto auto calc(100% + 3rem) 0;
+      margin: 0;
+      width: min(53cqw, 28rem);
+      font-size: 12px;
+      line-height: 1.52;
+      word-break: keep-all;
+    }
+    .frame {
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: transparent;
+      margin: 0;
+    }
+    .skull-frame { padding: 2.5%; }
+    .plush-frame {
+      position: absolute;
+      left: max(10px, 1cqw);
+      top: 26%;
+      width: clamp(54px, 11.25cqw, 146px);
+      aspect-ratio: 110 / 126;
+      padding: 5px;
+    }
+    .plush-frame img { max-height: 100%; object-fit: contain; }
+    .frame img { display: block; width: 100%; height: auto; }
+    .portrait {
+      position: absolute;
+      width: min(18cqw, 20cqh);
+      padding: 3px;
+    }
+    .portrait-back { left: clamp(30cqw, calc(var(--shark-left) + var(--shark-width) * .70), 54cqw); top: max(53cqh, calc(var(--skull-top) + var(--skull-width) * .56 + clamp(18px, 5cqh, 40px))); }
+    .portrait-front { left: clamp(18cqw, calc(var(--shark-left) + var(--shark-width) * .46), 42cqw); top: 60%; }
+    .focus {
+      position: absolute;
+      width: min(7cqw, 9cqh);
+      aspect-ratio: 1;
+    }
+    .focus-head {
+      left: clamp(9cqw, calc(var(--shark-left) + var(--shark-width) * .54), 34cqw);
+      top: 8%;
+    }
+    .focus-tail {
+      left: clamp(2cqw, calc(var(--shark-left) + var(--shark-width) * .28), 25cqw);
+      top: clamp(73cqh, calc(var(--shark-width) * 1.4), 87cqh);
+      transform: translateX(-50%);
+    }
+    .tail-quote {
+      inset: auto auto 3cqh max(14cqw, calc(var(--shark-left) + var(--shark-width) * .28 + 5cqw));
+      width: min(70cqw, 23rem);
+    }
+    .focus::after {
+      content: "+";
+      font: 1rem/1 monospace;
+    }
+    @media (max-aspect-ratio: 3/4) {
+      .page {
+        --skull-top: max(15cqh, 84px);
+        --skull-width: 39cqw;
+        --shark-left: min(-13cqw, -8cqh);
+        --shark-width: max(97cqw, 66cqh);
+      }
+      .shark { top: 0; }
+      .portrait { width: 24cqw; }
+      .skull-panel .quote { width: 54cqw; }
+    }
+    .aquarium {
+      position: absolute;
+      right: clamp(12px, 3cqw, 44px);
+      bottom: clamp(12px, 4cqh, 32px);
+      width: min(31cqw, 330px);
+      min-width: 190px;
+      font-size: 12px;
+    }
+    .aquarium-heading {
+      position: absolute;
+      top: 16cqh;
+      right: clamp(12px, 3cqw, 44px);
+      container-type: inline-size;
+      width: min(36cqw, 383px);
+      font-size: 12px;
+    }
+    .aquarium-title {
+      margin: 0 0 5px;
+      font: 400 min(12.7cqi, 62px)/.98 "Redaction 70", "Redaction 70 Fallback", Georgia, serif;
+      letter-spacing: -.035em;
+      white-space: nowrap;
+    }
+    .aquarium-subtitle { margin: 0 0 9px; line-height: 1.3; }
+    .aquarium-prologue { max-width: 86%; margin: 0; color: #666; line-height: 1.45; word-break: keep-all; }
+    .aquarium-dialogue { margin: 0 0 7px; font-size: 11px; line-height: 1.4; word-break: keep-all; }
+    .aquarium-dialogue p { margin: 0 0 3px; }
+    .tank {
+      position: relative;
+      width: 90%;
+      height: clamp(54px, 17cqh, 125px);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .bubble-stream {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .bubble {
+      position: absolute;
+      bottom: -10px;
+      left: var(--x);
+      width: 6px;
+      height: 6px;
+      color: #817d86;
+      background:
+        linear-gradient(currentColor, currentColor) center top / 2px 1px no-repeat,
+        linear-gradient(currentColor, currentColor) center bottom / 2px 1px no-repeat,
+        linear-gradient(currentColor, currentColor) left center / 1px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) right center / 1px 2px no-repeat;
+      animation: bubble-rise var(--duration) steps(20, end) var(--delay) infinite;
+    }
+    .bubble::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      width: 1px;
+      height: 1px;
+      background: currentColor;
+      box-shadow: 3px 0, 0 3px, 3px 3px;
+    }
+    .tank.still .bubble-stream, .tank.melted .bubble-stream { display: none; }
+    @keyframes bubble-rise {
+      0% { bottom: -8px; opacity: 0; }
+      15% { opacity: .63; }
+      52% { translate: 5px 0; opacity: .44; }
+      90%, 100% { bottom: 100%; translate: -2px 0; opacity: 0; }
+    }
+    .jelly {
+      position: absolute;
+      color: #28252a;
+      font: clamp(2px, min(.53cqw, .51cqh), 4.5px)/.95 "DejaVu Sans Mono", "Segoe UI Symbol", monospace;
+    }
+    .jelly-swim { margin: 0; font: inherit; animation: var(--drift) ease-in-out infinite; }
+    .jelly-bell, .jelly-tentacles { display: block; }
+    .jelly-bell {
+      transform-origin: 31% 100%;
+      animation: bell-pulse var(--beat) ease-in-out var(--phase) infinite;
+    }
+    .jelly-tentacles {
+      transform-origin: 31% 0;
+      animation: tentacle-sway var(--beat) ease-in-out calc(var(--phase) + .24s) infinite;
+    }
+    .jelly:nth-child(1) { left: 7%; top: 14%; --drift: rising 10s -2s; --beat: 2.8s; --phase: -.9s; }
+    .jelly:nth-child(2) {
+      left: 39%; top: 22%;
+      font-size: clamp(1.8px, min(.44cqw, .43cqh), 3.8px);
+      --drift: looping 13s -7s; --beat: 3.6s; --phase: -2s;
+    }
+    .jelly:nth-child(3) {
+      left: 66%; top: 17%;
+      font-size: clamp(1.8px, min(.48cqw, .46cqh), 4.1px);
+      --drift: receding 16s -4s; --beat: 4.3s; --phase: -2.8s;
+    }
+    .tank.still .jelly-swim,
+    .tank.still .jelly-bell,
+    .tank.still .jelly-tentacles { animation-play-state: paused; }
+    .tank.melted .jelly { animation: melt .9s ease-in forwards; }
+    @keyframes rising {
+      0%, 100% { transform: translate(-4%, 7%) rotate(-9deg); opacity: .72; }
+      30% { transform: translate(13%, -10%) rotate(6deg); opacity: 1; }
+      64% { transform: translate(24%, -3%) rotate(11deg); opacity: .9; }
+    }
+    @keyframes looping {
+      0%, 100% { transform: translate(10%, -6%) rotate(13deg); opacity: .9; }
+      36% { transform: translate(-18%, 12%) rotate(-15deg); opacity: .62; }
+      71% { transform: translate(-12%, -11%) rotate(-6deg); opacity: 1; }
+    }
+    @keyframes receding {
+      0%, 100% { transform: translate(-15%, 9%) rotate(-14deg) scale(.82); opacity: .23; }
+      35% { transform: translate(6%, -9%) rotate(9deg) scale(1); opacity: .94; }
+      66% { transform: translate(-4%, 2%) rotate(3deg) scale(.93); opacity: .69; }
+    }
+    @keyframes bell-pulse {
+      0%, 100% { transform: scale(1.07, .91); }
+      18% { transform: scale(1.09, .89); }
+      36% { transform: scale(.78, 1.13); }
+      49% { transform: scale(.84, 1.09); }
+      76% { transform: scale(1.02, .96); }
+    }
+    @keyframes tentacle-sway {
+      0%, 100% { transform: skewX(-7deg) scaleY(.95); }
+      24% { transform: skewX(-3deg) scaleY(1.01); }
+      46% { transform: skewX(10deg) scaleY(1.09); }
+      67% { transform: skewX(6deg) scaleY(1.04); }
+      86% { transform: skewX(-5deg) scaleY(.96); }
+    }
+    .tentacle-tip {
+      display: block;
+      transform-origin: 35% 0;
+      animation: tip-follow var(--beat) ease-in-out calc(var(--phase) + .48s) infinite;
+    }
+    @keyframes tip-follow {
+      0%, 100% { transform: skewX(-5deg) rotate(-3deg); }
+      42% { transform: skewX(9deg) rotate(5deg); }
+      75% { transform: skewX(2deg) rotate(1deg); }
+    }
+    .tank.still .tentacle-tip { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      .tentacle-tip { animation: none; }
+    }
+    @keyframes melt {
+      to { transform: translateY(34px) scale(1.35, .03); opacity: 0; }
+    }
+    .aquarium-controls, .temperature-controls { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+    .temperature-controls[hidden], .aquarium button[hidden] { display: none; }
+    .aquarium button {
+      border: 1px solid var(--line);
+      padding: 3px 5px;
+      background: #fff;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+    .aquarium button:disabled { opacity: .45; cursor: default; }
+    .aquarium-status { display: block; margin-top: 4px; }
+    @media (max-width: 540px) {
+      .aquarium { width: min(52cqw, 265px); min-width: 0; bottom: 10px; }
+      .aquarium-heading { top: 30cqh; right: 12px; width: 52cqw; }
+      .aquarium-prologue { max-width: 100%; }
+      .tank { height: clamp(44px, 11cqh, 80px); }
+      .portrait-back { left: 24cqw; }
+      .portrait-front { left: 12cqw; }
+      .portrait { width: 19cqw; }
+      .tail-quote { bottom: min(32cqh, 220px); left: 4cqw; width: 31cqw; }
+      .jelly:nth-child(n) { font-size: clamp(1.8px, min(.56cqw, .33cqh), 2.7px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bubble-stream { display: none; }
+      .jelly-swim, .jelly-bell, .jelly-tentacles { animation: none; }
+      .tank.melted .jelly { animation: none; opacity: 0; }
+    }
+    /* Swim independently of the fixed specimen frames. */
+    .shark { transform-origin: 48% 38%; animation: shark-swim 11s ease-in-out infinite; }
+    @keyframes shark-swim {
+      0%, 100% { transform: translate(-5px, 3px) rotate(-1deg) skewX(-.6deg); }
+      25% { transform: translate(5px, -5px) rotate(.7deg) skewX(.7deg); }
+      50% { transform: translate(10px, 1px) rotate(1.2deg) skewX(-.4deg); }
+      75% { transform: translate(0, 7px) rotate(-.5deg) skewX(.5deg); }
+    }
+    .jelly:nth-child(n) {
+      left: 0; top: 0;
+      offset-path: ellipse(27% 15% at 50% 50%);
+      offset-anchor: 44% 44%;
+      offset-rotate: 0deg;
+      animation: jelly-current var(--orbit) linear infinite;
+    }
+    .jelly:nth-child(1) { --orbit: 38s; animation-delay: -2s; }
+    .jelly:nth-child(2) { --orbit: 43s; animation-delay: -12s; }
+    .jelly:nth-child(3) { --orbit: 49s; animation-delay: -24s; }
+    .jelly-swim { animation: jelly-propel var(--beat) ease-in-out var(--phase) infinite; }
+    @keyframes jelly-current {
+      from { offset-distance: 0%; }
+      to { offset-distance: 100%; }
+    }
+    @keyframes jelly-propel {
+      0%, 100% { transform: translate(-3px, 3px) rotate(26deg); }
+      18% { transform: translate(-2px, 2px) rotate(27deg); }
+      38% { transform: translate(5px, -6px) rotate(31deg); }
+      62% { transform: translate(7px, -8px) rotate(29deg); }
+      82% { transform: translate(2px, -3px) rotate(26deg); }
+    }
+    .tank.still .jelly { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      .shark, .jelly:nth-child(n) { animation: none; }
+      .jelly-swim { animation: none; }
+      .jelly:nth-child(1) { offset-distance: 5%; }
+      .jelly:nth-child(2) { offset-distance: 38%; }
+      .jelly:nth-child(3) { offset-distance: 72%; }
+    }
+    .skull-frame { position: relative; }
+    .frame-link { position: absolute; z-index: 2; border: 0; padding: 2px 0; background: #fff; color: #222; font: 12px/1.3 "Mona12", sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; white-space: nowrap; }
+    .info-link { right: 0; bottom: -23px; }
+    .pair-link { right: 0; top: -24px; }
+    .backup-link { left: 0; bottom: -23px; }
+    .frame-link:hover { color: #777; }
+    button:focus-visible { outline: 1px dashed #222; outline-offset: 4px; }
+    .site-popup { width: min(560px, calc(100vw - 32px)); max-height: 80dvh; padding: 0; color: #222; background: #fff; border: 1px solid #68646a; font: 13px/1.8 "Mona12", sans-serif; }
+    .site-popup::backdrop { background: rgb(255 255 255 / .72); }
+    .popup-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid #aaa; }
+    .popup-bar h2 { margin: 0; font: 400 23px/1.2 "Redaction 70", Georgia, serif; }
+    .popup-close { border: 0; background: none; font: 24px/1 serif; cursor: pointer; }
+    .popup-body { padding: 24px; min-height: 180px; overflow-wrap: anywhere; }
+    .popup-body p { white-space: pre-wrap; }
+    .empty-copy { color: #888; }
+    .backup-list { list-style: none; margin: 0; padding: 0; }
+    .backup-list button, .back-to-list { border: 0; border-bottom: 1px solid #ddd; padding: 12px 0; width: 100%; text-align: left; background: none; color: inherit; font: inherit; cursor: pointer; }
+    .back-to-list { width: auto; margin-bottom: 16px; font-size: 11px; }
+    .shark { animation: none; }
+    .jelly:nth-child(n) {
+      offset-path: none; offset-distance: 0;
+      top: 100%; left: var(--entry);
+      animation: jelly-passage var(--passage) linear var(--arrival) infinite;
+    }
+    .jelly:nth-child(1) { --entry: -12%; --passage: 23s; --arrival: -8s; }
+    .jelly:nth-child(2) { --entry: 24%; --passage: 29s; --arrival: -20s; }
+    .jelly:nth-child(3) { --entry: 51%; --passage: 26s; --arrival: -1s; }
+    @keyframes jelly-passage {
+      0% { transform: translate(0, 35px) rotate(16deg); }
+      30% { transform: translate(calc(var(--swim-run) * .3), calc(var(--swim-rise) * -.3)) rotate(21deg); }
+      70% { transform: translate(calc(var(--swim-run) * .7), calc(var(--swim-rise) * -.7)) rotate(15deg); }
+      100% { transform: translate(var(--swim-run), calc(-1 * var(--swim-rise))) rotate(19deg); }
+    }
+    .jelly-swim { animation-name: jelly-thrust; }
+    @keyframes jelly-thrust {
+      0%, 100% { transform: translate(-1px, 2px) rotate(-4deg); }
+      18% { transform: translate(-1px, 2px) rotate(-3deg); }
+      40% { transform: translate(2px, -4px) rotate(1deg); }
+      65% { transform: translate(2px, -3px) rotate(0deg); }
+    }
+    .tank.melted .jelly { animation-play-state: paused; opacity: 0; }
+    .melt-particle { position: absolute; width: 1px; height: 1px; background: #68646a; pointer-events: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .jelly:nth-child(n) { animation: none; top: 20%; transform: none; }
+      .jelly:nth-child(1) { left: 4%; }
+      .jelly:nth-child(2) { left: 36%; }
+      .jelly:nth-child(3) { left: 64%; }
+      .jelly-swim { animation: none; }
+    }
+    .skull-panel > .quote { left: clamp(28px, 4cqw, 58px); }
+    .tail-quote { margin-left: calc(-1 * clamp(24px, 3cqw, 44px)); }
+    .aquarium-heading { width: min(40cqw, 460px); font-size: 14px; }
+    .aquarium-title { font-size: min(12.7cqi, 72px); }
+    @media (max-width: 540px) {
+      .skull-panel > .quote { left: 18px; width: 50cqw; }
+      .tail-quote { margin-left: -8px; }
+      .aquarium-heading { width: 54cqw; font-size: 13px; }
+    }
+    .site-popup.info-popup { width: min(1080px, calc(100vw - 40px)); max-height: 90dvh; background: #fff; overflow-x: hidden; }
+    .info-popup .popup-bar { display: contents; }
+    .info-popup #popup-title { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .info-popup .popup-close { position: absolute; top: 12px; right: 14px; z-index: 3; width: 28px; height: 28px; color: #56534c; }
+    .info-popup .popup-body { padding: 0; min-height: 0; }
+    .blue-info { position: relative; min-height: 530px; color: #222; font-family: "Mona12", sans-serif; isolation: isolate; }
+    .info-illustration { position: absolute; left: 0; top: 0; width: 45%; height: 100%; object-fit: cover; object-position: left center; z-index: -1; }
+    .info-content { margin-left: 45%; padding: 40px 34px 30px 26px; }
+    .dictionary-head { text-align: right; padding: 0; margin: 0 0 35px; }
+    .dictionary-meta { margin: 0 0 5px; font: 11px/1.6 "Mona12", sans-serif; }
+    .dictionary-head h3 { margin: 0; font: 400 86px/1.15 "Mona12", sans-serif; letter-spacing: -.065em; }
+    .info-text { display: block; }
+    .info-text h4 { margin: 0 0 5px; font: 700 12px/1.5 "Mona12", sans-serif; }
+    .info-text p { margin: 0 0 22px; font: 12px/1.85 "Mona12", sans-serif; word-break: keep-all; overflow-wrap: anywhere; }
+    .info-boundaries { padding-top: 1px; }
+    @media (max-width: 1000px) {
+      .info-content { padding-left: 20px; padding-right: 26px; }
+      .info-text { gap: 20px; }
+      .info-text p { font-size: 11px; }
+      .info-text h4 { font-size: 11px; }
+    }
+    @media (max-width: 600px) {
+      .site-popup.info-popup { width: calc(100vw - 24px); }
+      .blue-info { min-height: 510px; }
+      .info-illustration { width: 34%; object-position: 30% center; opacity: .9; }
+      .info-content { margin-left: 34%; padding: 42px 18px 20px 16px; }
+      .dictionary-head { margin-bottom: 25px; }
+      .dictionary-head h3 { font-size: 64px; }
+      .dictionary-meta { font-size: 9px; }
+      .info-text { display: block; }
+      .info-text p { font-size: 11px; margin-bottom: 17px; }
+      .info-boundaries { padding-top: 3px; }
+    }
+    .site-popup.pair-popup { width: min(1040px, calc(100vw - 28px)); max-height: 92dvh; background: #fff; overflow-x: hidden; }
+    .pair-popup .popup-bar { border: 0; padding: 12px 20px 0; }
+    .pair-popup .popup-bar h2 { font: 11px/1.5 "Mona12", sans-serif; }
+    .pair-popup .popup-body { padding: 0 20px 20px; }
+    .specimen-heading { text-align: center; padding-bottom: 5px; }
+    .specimen-heading h3 { margin: 0; font: 400 clamp(26px, 4vw, 46px)/1.2 "Redaction 70", Georgia, serif; letter-spacing: .08em; }
+    .specimen-heading p { display: none; }
+    .specimen-plate { position: relative; width: 100%; height: min(54vw, 63dvh); min-height: 360px; overflow: visible; }
+    .specimen { position: absolute; z-index: 1; border: 0; margin: 0; padding: 0; background: none; cursor: pointer; }
+    .specimen img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .specimen:hover img { filter: brightness(1.03); }
+    .specimen:focus-visible { outline: 1px dashed #68646a; outline-offset: 3px; }
+    .specimen-label { display: none; }
+    .specimen-octopus { left: 3%; top: 9%; width: 34%; height: 31%; rotate: -10deg; }
+    .specimen-lionfish { left: 39%; top: 8%; width: 25%; height: 30%; rotate: 14deg; }
+    .specimen-jellyfish { right: 3%; top: 4%; width: 20%; height: 48%; rotate: -10deg; }
+    .specimen-seahorse { left: 3%; top: 43%; width: 13%; height: 33%; rotate: -12deg; }
+    .specimen-hammerhead { z-index: 0; left: 15%; top: 32%; width: 70%; height: 40%; rotate: -6deg; }
+    .specimen-turtle { right: 3%; top: 49%; width: 21%; height: 26%; rotate: 15deg; }
+    .specimen-beluga { left: 12%; top: 76%; width: 32%; height: 20%; rotate: 6deg; }
+    .specimen-starfish { left: 47%; top: 78%; width: 15%; height: 19%; rotate: -18deg; }
+    .specimen-otter { right: 9%; top: 70%; width: 21%; height: 23%; rotate: -20deg; }
+    .specimen-index { position: relative; z-index: 2; display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 14px; margin: 12px 0 0; padding: 0; list-style: none; }
+    .specimen-index button { border: 0; padding: 2px 0; background: none; color: #555; cursor: pointer; font: 10px/1.5 "Mona12", sans-serif; }
+    .character-back { border: 0; padding: 8px 0; background: none; color: #555; font: 11px/1.5 "Mona12", sans-serif; cursor: pointer; }
+    .character-detail { min-height: 350px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; padding: 15px 0 30px; }
+    .character-detail img { display: block; width: 100%; height: 280px; object-fit: contain; }
+    .character-detail h3 { margin: 0 0 16px; font: 400 30px/1.3 "Mona12", sans-serif; }
+    .character-detail p { color: #888; font-size: 12px; }
+    @media (max-width: 600px) {
+      .pair-popup .popup-body { padding: 5px 12px 18px; }
+      .specimen-plate { height: 440px; }
+      .specimen-octopus { left: 2%; top: 6%; width: 36%; height: 27%; }
+      .specimen-lionfish { left: 39%; top: 3%; width: 28%; height: 29%; }
+      .specimen-jellyfish { right: 3%; top: 9%; width: 24%; height: 39%; }
+      .specimen-seahorse { left: 3%; top: 37%; width: 17%; height: 30%; }
+      .specimen-hammerhead { left: 10%; top: 31%; width: 80%; height: 38%; }
+      .specimen-turtle { right: 3%; top: 58%; width: 25%; height: 23%; }
+      .specimen-beluga { left: 3%; top: 75%; width: 39%; height: 20%; }
+      .specimen-starfish { left: 44%; top: 80%; width: 18%; height: 18%; }
+      .specimen-otter { right: 8%; top: 79%; width: 23%; height: 19%; }
+      .character-detail { grid-template-columns: 1fr; gap: 18px; }
+      .character-detail img { height: 210px; }
+    }
+    .specimen-beluga { left: 9%; top: 73%; width: 38%; height: 27%; rotate: 5deg; }
+    .specimen-beluga img { transform: scale(1.32); }
+    @media (max-width: 600px) {
+      .specimen-beluga { left: 4%; top: 74%; width: 39%; height: 23%; }
+      .specimen-beluga img { transform: scale(1.2); }
+    }
+    .specimen-preview {
+      position: absolute; z-index: 8; margin: 0; width: clamp(90px, 17%, 155px); aspect-ratio: 4 / 5;
+      border: 1px solid #68646a; padding: 3px; background: #fff;
+      pointer-events: none; opacity: 0; visibility: hidden; transition: opacity .16s ease;
+    }
+    .specimen-preview img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .specimen-preview-wire { position: absolute; z-index: 7; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; visibility: hidden; }
+    .specimen-preview-wire path { fill: none; stroke: #68646a; stroke-width: 1; }
+    .specimen-preview.visible, .specimen-preview-wire.visible { opacity: 1; visibility: visible; }
+    @media (prefers-reduced-motion: reduce) { .specimen-preview { transition: none; } }
+    .frame img.character-sprite {
+      position: absolute; z-index: 3; width: clamp(45px, 6cqw, 75px); height: auto;
+      image-rendering: pixelated; pointer-events: none; object-fit: contain;
+    }
+    .sprite-vein { left: -14%; bottom: 7%; }
+    .sprite-melt { right: -15%; top: 14%; }
+    .character-detail.has-profile { align-items: start; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 36px; }
+    .character-detail.has-profile > img { height: auto; max-height: 420px; object-fit: contain; position: sticky; top: 12px; }
+    .character-detail.has-profile p { margin: 0 0 17px; color: #333; font-size: 12px; line-height: 1.85; word-break: keep-all; }
+    .character-detail.has-profile .character-metadata { color: #666; font-size: 11px; }
+    .character-detail.has-profile a { color: #1C43FF; text-underline-offset: 3px; }
+    @media (max-width: 600px) {
+      .character-detail.has-profile { grid-template-columns: 1fr; gap: 22px; }
+      .character-detail.has-profile > img { position: static; height: 260px; max-height: none; }
+    }
+    .character-detail.has-profile p { margin-bottom: 8px; }
+    .character-detail.has-profile .character-metadata { margin-bottom: 3px; }
+    .character-detail.has-profile .character-music { margin-bottom: 10px; }
+    .character-detail.has-profile > div > p:last-child { color: #999; font-style: italic; }
+    .character-color-chip { display: inline-block; width: 9px; height: 9px; background: #1C43FF; vertical-align: -1px; margin-left: 2px; }
+    .page-music { position: absolute; right: clamp(12px, 3cqw, 44px); top: 40cqh; width: min(31cqw, 436px); text-align: right; z-index: 4; }
+    .bgm-controls { display: flex; justify-content: flex-end; gap: 10px; align-items: center; }
+    .bgm-ray { position: relative; display: block; width: clamp(55px, 9cqw, 130px); height: 100px; border: 0; padding: 0; cursor: pointer; background: none; }
+    .ray-art { display: block; width: 100%; height: 100%; background: url("./music-play.svg") center / contain no-repeat; }
+    .bgm-pause .ray-art { background-image: url("./music-pause.svg"); }
+    .bgm-volume-toggle .ray-art { background-image: url("./music-volume.svg"); }
+    .bgm-ray::after { content: attr(data-tip); position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); color: #444; background: #fff; border: 1px solid #aaa; padding: 2px 5px; font: 10px/1.5 "Mona12", sans-serif; white-space: nowrap; opacity: 0; pointer-events: none; }
+    .bgm-ray:hover::after, .bgm-ray:focus-visible::after { opacity: 1; }
+    .bgm-ray[aria-pressed="true"] .ray-art { opacity: .6; }
+    .bgm-volume { position: relative; }
+    .bgm-volume-panel { position: absolute; z-index: 2; right: 0; top: 100%; background: #fff; border: 1px solid #aaa; padding: 7px; display: flex; align-items: center; gap: 5px; font: 10px/1.4 "Mona12", sans-serif; }
+    .bgm-volume-panel input { width: 90px; accent-color: #555; }
+    .bgm-volume-panel[hidden], .bgm-engine[hidden] { display: none; }
+    .bgm-engine { margin: 5px 0 0 auto; width: min(200px, 100%); aspect-ratio: 16 / 9; }
+    .bgm-engine iframe { width: 100%; height: 100%; display: block; }
+    .bgm-status { display: block; min-height: 12px; margin-top: 3px; font: 9px/1.4 "Mona12", sans-serif; color: #888; }
+    @media (max-width: 540px) {
+      .page-music { width: 43cqw; top: 48cqh; right: 12px; }
+      .bgm-controls { gap: 2px; }
+      .bgm-ray { width: 13cqw; height: 53px; }
+      .bgm-engine { width: 120px; }
+    }
+    .page-music .bgm-engine {
+      position: absolute; left: -10000px; top: 0; width: 200px; height: 200px;
+      margin: 0; opacity: 0; pointer-events: none; overflow: hidden;
+    }
+    .blue-info { min-height: 570px; }
+    .info-illustration {
+      left: 0; top: 22%; width: 100%; height: 48%;
+      object-fit: contain; object-position: center; opacity: 1;
+    }
+    .info-content { margin-left: 0; padding: 0; }
+    .blue-info .dictionary-head {
+      position: absolute; right: 6%; top: 28px; margin: 0;
+      transform: rotate(-4deg); transform-origin: right center;
+    }
+    .blue-info .info-text { display: contents; }
+    .blue-info .info-interests {
+      position: absolute; left: 8%; top: 55px; width: 44%;
+      transform: rotate(-6deg); transform-origin: left top;
+    }
+    .blue-info .info-boundaries {
+      position: absolute; right: 7%; bottom: 75px; width: 44%;
+      padding: 0; transform: rotate(-6deg); transform-origin: right bottom;
+    }
+    .blue-info .info-text p { margin-bottom: 13px; font-size: 12px; }
+    .blue-info .info-text h4 { margin-bottom: 3px; font-size: 12px; }
+    @media (max-width: 600px) {
+      .blue-info { min-height: 760px; }
+      .blue-info .dictionary-head { top: 30px; right: 8%; }
+      .blue-info .info-interests { top: 150px; left: 8%; width: 82%; }
+      .blue-info .info-boundaries { width: 76%; bottom: 65px; right: 8%; }
+      .blue-info .info-illustration { top: 39%; height: 32%; }
+      .blue-info .info-text p, .blue-info .info-text h4 { font-size: 11px; }
+    }
+    .blue-info .info-illustration {
+      left: auto; right: 0; top: 15%; width: 100%; height: 70%;
+      object-fit: contain; object-position: right center;
+    }
+    .list-link { left: 0; top: -24px; }
+    .banner-exchange {
+      position: absolute; right: clamp(12px, 3cqw, 44px); top: 53cqh;
+      width: min(31cqw, 351px); height: min(13.7cqh, 121px);
+      overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+      padding: 8px; border: 1px solid #aaa; background: #fff;
+      scrollbar-width: thin; display: flex; flex-direction: column; gap: 8px;
+    }
+    .banner-link { position: relative; display: block; flex: 0 0 auto; color: #222; }
+    .banner-link img { display: block; width: 100%; height: auto; }
+    .banner-tooltip {
+      position: absolute; right: 4px; bottom: 4px; padding: 3px 6px;
+      background: #fff; border: 1px solid #68646a; font: 10px/1.4 "Mona12", sans-serif;
+      pointer-events: none; opacity: 0; visibility: hidden;
+    }
+    .banner-link:hover .banner-tooltip, .banner-link:focus-visible .banner-tooltip { opacity: 1; visibility: visible; }
+    @media (max-width: 540px) {
+      .banner-exchange { right: 12px; top: 56cqh; width: 43cqw; height: 9cqh; padding: 4px; }
+      .blue-info .info-illustration { top: 39%; width: 100%; height: 35%; object-position: right center; }
+    }
+    @media (min-width: 601px) {
+      .blue-info .info-boundaries { right: 3%; bottom: 5px; width: 38%; transform-origin: left bottom; }
+      .blue-info .info-boundaries p { font-size: 11px; line-height: 1.8; margin-bottom: 10px; }
+    }
+    .aquarium-heading { top: 11cqh; }
+    .aquarium-dialogue { text-align: right; }
+    .aquarium-controls { gap: 3px; }
+    .aquarium button { font-size: 11px; padding: 3px 4px; }
+    .aquarium-status { font-size: 10px; line-height: 1.6; }
+    .tank-story {
+      position: absolute; z-index: 0; inset: 6px; margin: 0; overflow: hidden;
+      font: 8px/1.3 "Mona12", sans-serif; color: rgb(40 40 40 / .11);
+      white-space: pre-wrap; text-align: left; pointer-events: none; user-select: none;
+    }
+    .tank .jelly { z-index: 1; }
+    .tank .bubble-stream { z-index: 2; }
+    .tank .melt-particle { z-index: 3; }
+    .blue-info .dictionary-head {
+      left: 6%; right: auto; top: auto; bottom: 22%; text-align: left;
+      transform: rotate(-8deg); transform-origin: left bottom;
+    }
+    .blue-info .info-interests {
+      left: 37%; top: 12%; width: 60%; height: 220px; transform: none;
+    }
+    .blue-info .info-interests > section {
+      position: absolute; transform: rotate(-12deg); transform-origin: left bottom;
+    }
+    .interest-platform { left: 0; top: 130px; width: 36%; }
+    .interest-main { left: 29%; top: 75px; width: 42%; }
+    .interest-sub { left: 58%; top: 20px; width: 42%; }
+    .blue-info .info-interests p { font-size: 11px; line-height: 1.7; }
+    @media (max-width: 600px) {
+      .blue-info .dictionary-head { left: 8%; right: auto; top: 40px; bottom: auto; }
+      .blue-info .info-interests { left: 8%; top: 150px; width: 82%; height: auto; }
+      .blue-info .info-interests > section { position: static; width: auto; transform: rotate(-6deg); margin-bottom: 12px; }
+    }
+    @media (max-width: 540px) {
+      .aquarium-heading { top: 26cqh; }
+      .aquarium button { font-size: 10px; }
+      .tank-story { font-size: 6px; }
+    }
+    @media (min-width: 601px) and (max-width: 1100px) {
+      .blue-info .dictionary-head { left: 5%; bottom: 14%; }
+      .blue-info .dictionary-head h3 { font-size: 76px; }
+    }
+    .gacha-frame { position: absolute; left: clamp(90px, 18cqw, 260px); top: 43cqh; width: clamp(70px, 11cqw, 110px); aspect-ratio: 1; }
+    .gacha-trigger { display: block; width: 100%; height: 100%; padding: 5px; border: 0; background: transparent; cursor: pointer; }
+    .gacha-trigger img { width: 100%; height: 100%; object-fit: contain; }
+    .gacha-label { position: absolute; right: 0; bottom: -23px; color: #222; font: 12px/1.3 "Mona12", sans-serif; text-decoration: underline; text-underline-offset: 3px; }
+    .site-popup.gacha-popup { width: min(700px, calc(100vw - 32px)); max-height: 88dvh; background: #fff; }
+    .gacha-popup .popup-bar { padding: 12px 20px; border-bottom: 1px solid #ccc; }
+    .gacha-popup .popup-bar h2 { font-size: 22px; }
+    .gacha-popup .popup-body { padding: 24px; }
+    .gacha-loading { min-height: 330px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
+    .gacha-loading img { width: 150px; height: 150px; object-fit: contain; animation: capsule-wait 1.2s ease-in-out infinite; }
+    .gacha-typing { min-height: 42px; margin: 0; font-size: 13px; line-height: 1.8; text-align: center; }
+    .gacha-typing > span::after { content: ""; display: inline-block; height: 1em; margin-left: 3px; border-right: 1px solid #777; vertical-align: -1px; animation: capsule-caret .8s steps(2, end) infinite; }
+    @keyframes capsule-wait {
+      0%, 100% { transform: translateY(3px) rotate(-7deg); }
+      30% { transform: translateY(-6px) rotate(7deg); }
+      60% { transform: translateY(-2px) rotate(-4deg); }
+    }
+    @keyframes capsule-caret { 50% { opacity: 0; } }
+    .gacha-result { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 24px; align-items: center; animation: gacha-reveal .35s ease-out; }
+    @keyframes gacha-reveal { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+    .gacha-prize { display: block; width: 100%; height: 250px; object-fit: contain; }
+    .gacha-result .gacha-eyebrow { margin: 0 0 7px; color: #888; font-size: 10px; }
+    .gacha-result h3 { margin: 0 0 14px; font: 400 28px/1.3 "Mona12", sans-serif; outline: none; }
+    .gacha-fortune { margin: 0 0 20px; font-size: 12px; line-height: 1.9; word-break: keep-all; }
+    .gacha-luck { margin: 0 0 20px; font-size: 11px; line-height: 1.8; }
+    .gacha-luck > div { display: grid; grid-template-columns: 76px 1fr; gap: 7px; margin-bottom: 5px; }
+    .gacha-luck dt { color: #888; }
+    .gacha-luck dd { margin: 0; }
+    .gacha-color { display: inline-block; width: 9px; height: 9px; margin-right: 5px; vertical-align: -1px; border: 1px solid rgb(0 0 0 / .08); }
+    .gacha-again { padding: 5px 9px; border: 1px solid #68646a; background: #fff; color: #222; font: 11px/1.5 "Mona12", sans-serif; cursor: pointer; }
+    @media (max-width: 540px) {
+      .gacha-frame { left: 19cqw; top: 39cqh; width: 16cqw; }
+      .gacha-popup .popup-body { padding: 20px; }
+      .gacha-result { grid-template-columns: 1fr; gap: 15px; }
+      .gacha-prize { height: 190px; }
+      .gacha-loading { min-height: 320px; }
+      .gacha-typing { font-size: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gacha-loading img, .gacha-typing > span::after, .gacha-result { animation: none; }
+    }
+    .right-scene {
+      position: absolute; left: 0; top: 0; width: 100vw; height: 100dvh;
+      container-type: size; pointer-events: none;
+      --right-inset: clamp(12px, 1.5vw, 24px);
+      --right-module: min(31cqw, 351px);
+    }
+    .right-scene > * { pointer-events: auto; }
+    .right-scene .aquarium-heading,
+    .right-scene .page-music,
+    .right-scene .banner-exchange,
+    .right-scene .aquarium { right: var(--right-inset); }
+    .right-scene .page-music { top: 34cqh; }
+    .right-scene .banner-exchange { top: 49cqh; width: var(--right-module); }
+    .right-scene .aquarium { width: var(--right-module); bottom: 50px; }
+    .right-scene .tank { width: 100%; }
+    .right-scene .aquarium-dialogue,
+    .right-scene .aquarium-status { text-align: right; }
+    .right-scene .aquarium-controls,
+    .right-scene .temperature-controls { justify-content: flex-end; }
+    .site-notice {
+      position: absolute; right: var(--right-inset); bottom: 8px;
+      max-width: min(85vw, 520px); margin: 0;
+      color: #999; text-align: right; font: 10px/1.5 "Mona12", sans-serif;
+    }
+    .gacha-frame { left: clamp(20px, 3cqw, 44px); top: clamp(24px, 4cqh, 40px); width: clamp(90px, 11cqw, 140px); }
+    @media (max-width: 540px) {
+      .gacha-frame { left: 12px; top: 12px; width: 58px; }
+      .right-scene .page-music { top: 48cqh; }
+      .right-scene .banner-exchange { top: 55cqh; width: 52cqw; height: 8cqh; }
+      .right-scene .aquarium { width: 52cqw; min-width: 0; bottom: 36px; }
+      .right-scene .aquarium button { font-size: 9px; }
+      .site-notice { bottom: 6px; max-width: 90vw; font-size: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="귀상어와 초점 프레임">
+    <img class="shark" src="./shark.jpg" width="736" height="1432" alt="문자 기호로 그린 귀상어">
+    <svg class="links" aria-hidden="true">
+      <path></path>
+    </svg>
+    <div class="frame focus focus-head" aria-hidden="true"></div>
+    <figure class="frame gacha-frame">
+      <button type="button" class="gacha-trigger" data-popup="gacha" aria-label="gacha 해양생물 뽑기">
+        <img src="./gacha/capsule.png" width="300" height="300" alt="하늘색 뽑기 캡슐">
+        <span class="gacha-label">gacha</span>
+      </button>
+    </figure>
+    <figure class="frame plush-frame">
+      <button class="frame-link list-link" data-popup="list" type="button">list</button>
+      <img src="./hammerhead-plush.png" alt="회색 망치상어 인형">
+    </figure>
+    <section class="skull-panel" aria-label="귀상어 두개골">
+      <p class="quote">머리가 웃기게 생겼잖아. 근데 그래서 남들보다 더 넓게 본대. 눈이 멀리 떨어져서, 그게 좋았어.</p>
+      <figure class="frame skull-frame">
+        <button class="frame-link info-link" data-popup="info" type="button">info</button>
+        <img src="./hammerhead-skull.png" width="1724" height="912" alt="귀상어 두개골 표본">
+      </figure>
+    </section>
+    <figure class="frame portrait portrait-back">
+      <img class="character-sprite sprite-melt" src="./jump_0.png" alt="멜트 도트 캐릭터" width="62" height="89">
+      <button class="frame-link pair-link" data-popup="pair" type="button">pair +@</button>
+      <img src="./portrait-2.png" width="1080" height="1350" alt="분홍색 제복을 입은 캐릭터">
+    </figure>
+    <figure class="frame portrait portrait-front">
+      <img class="character-sprite sprite-vein" src="./swingT1_2.png" alt="베인 도트 캐릭터" width="75" height="87">
+      <button class="frame-link backup-link" data-popup="backup" type="button">backup</button>
+      <img src="./portrait-1.png" width="1122" height="1402" alt="보라색 제복을 입은 캐릭터">
+    </figure>
+    <div class="frame focus focus-tail" aria-hidden="true"></div>
+    <p class="quote tail-quote">유리에 비친 두 사람의 실루엣이 겹쳤다. 큰 그림자 하나와, 그 가슴께에 박힌 작은 그림자 하나.</p>
+    <div class="right-scene">
+      <header class="aquarium-heading">
+        <h1 class="aquarium-title">MELTING POINT</h1>
+        <p class="aquarium-subtitle">THEMIS: VEINxMELT</p>
+        <p class="aquarium-prologue">고아원 도서실의 너덜너덜한 페이지를 떠올려 보았다. 해질녘, 아무도 데리러 오지 않는 시간에 같은 장만 반복해 넘기는 작은 손가락. 그리고 그 아이가 지금, 종이에서 빠져나와 헤엄치는 진짜를 처음 보고 있었다.</p>
+      </header>
+    <aside class="page-music" aria-label="배경 음악 플레이어">
+      <div class="bgm-controls">
+        <button type="button" class="bgm-ray bgm-play" data-tip="재생" aria-label="재생"><span class="ray-art"></span></button>
+        <button type="button" class="bgm-ray bgm-pause" data-tip="일시정지" aria-label="일시정지"><span class="ray-art"></span></button>
+        <div class="bgm-volume">
+          <button type="button" class="bgm-ray bgm-volume-toggle" data-tip="음량 조절" aria-label="음량 조절" aria-expanded="false" aria-controls="bgm-volume-panel"><span class="ray-art"></span></button>
+          <div class="bgm-volume-panel" id="bgm-volume-panel" hidden>
+            <input type="range" min="0" max="100" value="40" aria-label="음량">
+            <output>40%</output>
+          </div>
+        </div>
+      </div>
+      <div class="bgm-engine" hidden><div id="bgm-youtube"></div></div>
+      <output class="bgm-status" aria-live="polite"></output>
+    </aside>
+    <section class="banner-exchange" aria-label="교환 배너 모음" tabindex="0">
+      <a class="banner-link" href="./" aria-label="MELTING POINT">
+        <img src="./melting-point-banner.png" alt="MELTING POINT 배너" width="2000" height="400">
+        <span class="banner-tooltip" role="tooltip">MELTING POINT</span>
+      </a>
+    </section>
+    <section class="aquarium" aria-label="해파리 키우기">
+
+      <div class="aquarium-dialogue" aria-live="polite">
+        <p>해파리는 더 까다로워, 물 온도, 염도, 수류. 하루만 펌프 꺼져도 녹아. 형체도 안 남고.</p>
+        <p>...그럼 못 키우겠다.</p>
+        <p>너 혼자선 못 하지.</p>
+      </div>
+      <div class="tank" aria-hidden="true">
+        <p class="tank-story">서도혁은 판정서 뒷장에 첨부돼 있던 계보 자료를 떠올렸다. 각성 직후, 감방에서 막 나온 몸으로 그 서류를 끝까지 읽었다. 자기 안에 들어앉은 게 대체 뭔지 알아야 덜 미칠 것 같아서였다. 거기 적힌 포세이돈의 자식들은 대체로 괴물이거나, 영웅에게 죽거나, 아비 탓에 저주를 받았다. 읽으면서 생각했었다. 이 신의 피를 받은 것들은 다 저렇게 끝나는구나. 그렇다면 자기도.
+그런데 그 목록 맨 끝에 한 줄짜리 이름이 하나 있었다. 아무도 죽이지 않고, 아무에게도 죽지 않은.
+베인｜"로데."
+멜트｜"로데?"
+베인｜"포세이돈 딸. 섬 하나 이름이 됐어. 해가 제일 오래 비치는 섬. 태양신이 반해서 데려갔대."</p>
+        <div class="jelly"><pre class="jelly-swim"><span class="jelly-bell">⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⡀
+⠀⠀⠀⠀⣠⣴⣿⠿⡿⠟⠻⠿⢷⣦⡀
+⠀⠀⢠⣾⢿⠋⠈⠀⡇⠀⠀⣇⠀⠈⢿⣆
+⠀⢰⣿⣯⣿⣤⣲⣀⣇⡀⠀⡯⠀⠀⢸⣿⣆
+⢀⡿⠿⡟⢻⡻⡿⣿⣿⣿⣿⠿⣶⣤⣤⣯⣿⡆
+⠘⢷⣤⣷⣄⠏⣿⣽⣿⡿⠃⣀⠔⣚⣋⣻⡿⠃
+⠀⠘⡌⢻⠛⢻⣿⣿⣿⣧⣴⣥⣴⡿⠛⢫⠃</span><span class="jelly-tentacles">⠀⠀⠀⢸⣠⢋⣿⣿⣷⣧⠘⣟⠰⠀⡠⠃
+⠀⠀⣠⠾⣶⣿⣿⣿⣿⣿⡕⢼⣢⡎
+⠀⠰⠃⠀⢦⡿⠗⣿⡇⠿⣿⡎⢸⠢⢅⠢⣀
+⠀⢸⠀⠀⣾⠳⣾⣿⡿⣾⡛⣁⣀⣆⠈⢣⠈⠑⠦⡀
+⠀⠸⡀⠀⢹⠀⠻⣿⣷⠌⢿⣿⣿⣿⠗⠊⡆⠀⠀⠈⢆
+⠀⠀⠑⡀⠀⡆⠀⡞⣿⡣⣄⠸⠿⢿⣧⠀⡇⠀⠀⠀⠈⡄
+⠀⠀⠀⠈⠀⠱⠀⠸⣸⢻⣮⡓⣦⡨⣯⡈⡇⠀⠀⠀⠀⡁
+⠀⠀⠀⠀⠀⠀⠳⡀⢃⠸⣟⢿⣿⣞⠻⣷⣧⡀⠀⠀⠀⢇
+<span class="tentacle-tip">⠀⠀⠀⠀⠀⠀⠀⠙⠺⣆⠉⠉⠁⠉⠓⢼⣿⣉⠢⢄⡀⠀⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢟⠢⠀⡀⠀⠀⠙⢻⣗⠢⡈⠑⠤⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠈⠑⢦⡀⠈⠳⠉⠺⢶⡀⠘⠆
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠑⠦⣀⠈⢆⠀⠀⠀⠀⠙⢆⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠒⡧⣀⠀⠀⠀⠸⡗⣄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⠀⠀⠀⡇⠈⡄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⡀⠀⡆⠀⠸
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉</span></span></pre></div>
+        <div class="jelly"><pre class="jelly-swim"><span class="jelly-bell">⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⡀
+⠀⠀⠀⠀⣠⣴⣿⠿⡿⠟⠻⠿⢷⣦⡀
+⠀⠀⢠⣾⢿⠋⠈⠀⡇⠀⠀⣇⠀⠈⢿⣆
+⠀⢰⣿⣯⣿⣤⣲⣀⣇⡀⠀⡯⠀⠀⢸⣿⣆
+⢀⡿⠿⡟⢻⡻⡿⣿⣿⣿⣿⠿⣶⣤⣤⣯⣿⡆
+⠘⢷⣤⣷⣄⠏⣿⣽⣿⡿⠃⣀⠔⣚⣋⣻⡿⠃
+⠀⠘⡌⢻⠛⢻⣿⣿⣿⣧⣴⣥⣴⡿⠛⢫⠃</span><span class="jelly-tentacles">⠀⠀⠀⢸⣠⢋⣿⣿⣷⣧⠘⣟⠰⠀⡠⠃
+⠀⠀⣠⠾⣶⣿⣿⣿⣿⣿⡕⢼⣢⡎
+⠀⠰⠃⠀⢦⡿⠗⣿⡇⠿⣿⡎⢸⠢⢅⠢⣀
+⠀⢸⠀⠀⣾⠳⣾⣿⡿⣾⡛⣁⣀⣆⠈⢣⠈⠑⠦⡀
+⠀⠸⡀⠀⢹⠀⠻⣿⣷⠌⢿⣿⣿⣿⠗⠊⡆⠀⠀⠈⢆
+⠀⠀⠑⡀⠀⡆⠀⡞⣿⡣⣄⠸⠿⢿⣧⠀⡇⠀⠀⠀⠈⡄
+⠀⠀⠀⠈⠀⠱⠀⠸⣸⢻⣮⡓⣦⡨⣯⡈⡇⠀⠀⠀⠀⡁
+⠀⠀⠀⠀⠀⠀⠳⡀⢃⠸⣟⢿⣿⣞⠻⣷⣧⡀⠀⠀⠀⢇
+<span class="tentacle-tip">⠀⠀⠀⠀⠀⠀⠀⠙⠺⣆⠉⠉⠁⠉⠓⢼⣿⣉⠢⢄⡀⠀⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢟⠢⠀⡀⠀⠀⠙⢻⣗⠢⡈⠑⠤⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠈⠑⢦⡀⠈⠳⠉⠺⢶⡀⠘⠆
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠑⠦⣀⠈⢆⠀⠀⠀⠀⠙⢆⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠒⡧⣀⠀⠀⠀⠸⡗⣄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⠀⠀⠀⡇⠈⡄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⡀⠀⡆⠀⠸
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉</span></span></pre></div>
+        <div class="jelly"><pre class="jelly-swim"><span class="jelly-bell">⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⡀
+⠀⠀⠀⠀⣠⣴⣿⠿⡿⠟⠻⠿⢷⣦⡀
+⠀⠀⢠⣾⢿⠋⠈⠀⡇⠀⠀⣇⠀⠈⢿⣆
+⠀⢰⣿⣯⣿⣤⣲⣀⣇⡀⠀⡯⠀⠀⢸⣿⣆
+⢀⡿⠿⡟⢻⡻⡿⣿⣿⣿⣿⠿⣶⣤⣤⣯⣿⡆
+⠘⢷⣤⣷⣄⠏⣿⣽⣿⡿⠃⣀⠔⣚⣋⣻⡿⠃
+⠀⠘⡌⢻⠛⢻⣿⣿⣿⣧⣴⣥⣴⡿⠛⢫⠃</span><span class="jelly-tentacles">⠀⠀⠀⢸⣠⢋⣿⣿⣷⣧⠘⣟⠰⠀⡠⠃
+⠀⠀⣠⠾⣶⣿⣿⣿⣿⣿⡕⢼⣢⡎
+⠀⠰⠃⠀⢦⡿⠗⣿⡇⠿⣿⡎⢸⠢⢅⠢⣀
+⠀⢸⠀⠀⣾⠳⣾⣿⡿⣾⡛⣁⣀⣆⠈⢣⠈⠑⠦⡀
+⠀⠸⡀⠀⢹⠀⠻⣿⣷⠌⢿⣿⣿⣿⠗⠊⡆⠀⠀⠈⢆
+⠀⠀⠑⡀⠀⡆⠀⡞⣿⡣⣄⠸⠿⢿⣧⠀⡇⠀⠀⠀⠈⡄
+⠀⠀⠀⠈⠀⠱⠀⠸⣸⢻⣮⡓⣦⡨⣯⡈⡇⠀⠀⠀⠀⡁
+⠀⠀⠀⠀⠀⠀⠳⡀⢃⠸⣟⢿⣿⣞⠻⣷⣧⡀⠀⠀⠀⢇
+<span class="tentacle-tip">⠀⠀⠀⠀⠀⠀⠀⠙⠺⣆⠉⠉⠁⠉⠓⢼⣿⣉⠢⢄⡀⠀⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢟⠢⠀⡀⠀⠀⠙⢻⣗⠢⡈⠑⠤⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⣄⠈⠑⢦⡀⠈⠳⠉⠺⢶⡀⠘⠆
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠑⠦⣀⠈⢆⠀⠀⠀⠀⠙⢆⡀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠒⡧⣀⠀⠀⠀⠸⡗⣄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⠀⠀⠀⡇⠈⡄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⡀⠀⡆⠀⠸
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉</span></span></pre></div>
+        <div class="bubble-stream">
+          <span class="bubble" style="--x: 15%; --duration: 6s; --delay: -1s"></span>
+          <span class="bubble" style="--x: 18%; --duration: 5s; --delay: -3s"></span>
+          <span class="bubble" style="--x: 48%; --duration: 7s; --delay: -2s"></span>
+          <span class="bubble" style="--x: 79%; --duration: 6s; --delay: -4s"></span>
+          <span class="bubble" style="--x: 83%; --duration: 5s; --delay: -1s"></span>
+        </div>
+      </div>
+      <div class="aquarium-controls">
+        <button type="button" data-action="feed">먹이 주기</button>
+        <button type="button" data-action="temperature" aria-expanded="false" aria-controls="tank-temperature">온도 맞추기</button>
+        <button type="button" data-action="salinity" aria-expanded="false" aria-controls="tank-salinity">염도 조절</button>
+        <button type="button" data-action="pump" aria-pressed="true">펌프 멈추기</button>
+        <button type="button" data-action="reset" hidden>다시 키우기</button>
+      </div>
+      <div class="temperature-controls" id="tank-temperature" hidden>
+        <button type="button" data-action="warmer" aria-label="온도 올리기">↑</button>
+        <button type="button" data-action="cooler" aria-label="온도 내리기">↓</button>
+      </div>
+      <div class="temperature-controls salinity-controls" id="tank-salinity" hidden>
+        <button type="button" data-action="saltier" aria-label="염도 올리기">↑</button>
+        <button type="button" data-action="fresher" aria-label="염도 내리기">↓</button>
+      </div>
+      <output class="aquarium-status" aria-live="polite">22°C · 펌프 가동 중</output>
+    </section>
+      <p class="site-notice">이 사이트는 AI 캐릭터 채팅 페어 홈입니다. AI 생성물이 사용되었습니다.</p>
+    </div>
+  </main>
+  <template id="info-layout">
+    <article class="dictionary-entry blue-info" aria-label="동주 소개">
+      <img class="info-illustration" src="./info-cleared-fish.png" alt="청록색과 자홍색의 투명한 물고기 표본">
+      <div class="info-content">
+        <header class="dictionary-head">
+          <h3>동주</h3>
+        </header>
+        <div class="info-text">
+          <div class="info-interests">
+            <section class="interest-platform"><h4>주력 이용 플랫폼</h4><p>크랙, 케이브덕</p></section>
+            <section class="interest-main"><h4>MAIN</h4><p>THEMIS - VEINxMELT<br>ARCH - VIBExVAJRA</p></section>
+            <section class="interest-sub"><h4>SUB</h4><p>애쉬폴 프로토콜<br>탄죠비케키 카케라/탄죠비케키 카라스프레</p></section>
+          </div>
+          <div class="info-boundaries">
+            <p>기본 온리 성향, 상호 배려.<br>최대한 1T1D 해드리고 있습니다.<br>(자연발생 제외 신규유입X)</p>
+            <h4>NG</h4>
+            <p>드림 지우기, 겹드림 직멘 및 과도한 유입.<br>과한 마이너스 플로우.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+  </template> <dialog class="site-popup" aria-labelledby="popup-title"><header class="popup-bar"><h2 id="popup-title"></h2><button type="button" class="popup-close" aria-label="팝업 닫기">×</button></header><div class="popup-body"></div></dialog>
+  <script>
+    const page = document.querySelector(".page");
+    const connectors = document.querySelector(".links path");
+    const focus = document.querySelector(".focus-head");
+    const tail = document.querySelector(".focus-tail");
+    const skull = document.querySelector(".skull-frame");
+    const plush = document.querySelector(".plush-frame");
+    const back = document.querySelector(".portrait-back");
+    const front = document.querySelector(".portrait-front");
+    const gachaFrame = document.querySelector(".gacha-frame");
+
+    function connectFrames() {
+      const origin = page.getBoundingClientRect();
+      const center = frame => {
+        const r = frame.getBoundingClientRect();
+        return { x: (r.left + r.right) / 2 - origin.left,
+          y: (r.top + r.bottom) / 2 - origin.top,
+          w: r.width, h: r.height };
+      };
+      const link = (from, to) => {
+        const a = center(from), b = center(to);
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const edge = r => Math.min(
+          dx ? r.w / 2 / Math.abs(dx) : Infinity,
+          dy ? r.h / 2 / Math.abs(dy) : Infinity);
+        const u = edge(a), v = edge(b);
+        return `M${a.x + dx * u} ${a.y + dy * u} L${b.x - dx * v} ${b.y - dy * v}`;
+      };
+      connectors.setAttribute("d", [
+        link(plush, skull), link(focus, skull), link(skull, back),
+        link(front, back), link(front, tail), link(gachaFrame, plush)
+      ].join(" "));
+    }
+
+    const resize = new ResizeObserver(connectFrames);
+    for (const frame of [page, focus, skull, plush, back, front, tail, gachaFrame]) resize.observe(frame);
+    connectFrames();
+
+    const aquarium = document.querySelector(".aquarium");
+    const tank = aquarium.querySelector(".tank");
+    const dialogue = aquarium.querySelector(".aquarium-dialogue");
+    const openingDialogue = dialogue.innerHTML;
+    const status = aquarium.querySelector(".aquarium-status");
+    const temperatures = aquarium.querySelector(".temperature-controls");
+    const temperatureButton = aquarium.querySelector('[data-action="temperature"]');
+    const salinities = aquarium.querySelector(".salinity-controls");
+    const salinityButton = aquarium.querySelector('[data-action="salinity"]');
+    const pumpButton = aquarium.querySelector('[data-action="pump"]');
+    const resetButton = aquarium.querySelector('[data-action="reset"]');
+    const careButtons = aquarium.querySelectorAll('button:not([data-action="reset"])');
+    let temperature = 22;
+    let salinity = 35;
+    let feedingCount = 0;
+    let pumpOn = true;
+    let pumpTimer;
+    let melted = false;
+    let recentActions = [];
+    let recentFeedings = [];
+
+    function updateTank(message = "") {
+      tank.classList.toggle("still", !pumpOn);
+      pumpButton.textContent = pumpOn ? "펌프 멈추기" : "펌프 가동하기";
+      pumpButton.setAttribute("aria-pressed", String(pumpOn));
+      status.textContent = [temperature + "°C", "염도 " + salinity + "‰", "먹이 " + feedingCount + "회", pumpOn ? "펌프 가동 중" : "펌프 정지", message]
+        .filter(Boolean).join(" · ");
+    }
+
+    function showTemperature(open) {
+      temperatures.hidden = !open;
+      temperatureButton.setAttribute("aria-expanded", String(open));
+    }
+
+    function showSalinity(open) {
+      salinities.hidden = !open;
+      salinityButton.setAttribute("aria-expanded", String(open));
+    }
+
+    function melt(reason) {
+      melted = true;
+      clearTimeout(pumpTimer);
+      dissolveJellies();
+      tank.classList.add("melted");
+      dialogue.textContent = "그럴 줄 알았다. 너 선인장도 죽였잖아.";
+      showTemperature(false);
+      showSalinity(false);
+      for (const button of careButtons) button.disabled = true;
+      resetButton.hidden = false;
+      updateTank(reason);
+    }
+
+    aquarium.addEventListener("click", event => {
+      const action = event.target.dataset.action;
+      if (action === "reset") {
+        melted = false;
+        temperature = 22;
+        salinity = 35;
+        feedingCount = 0;
+        showTemperature(false);
+        showSalinity(false);
+        pumpOn = true;
+        recentActions = [];
+        recentFeedings = [];
+        tank.querySelectorAll(".melt-particle").forEach(p => p.remove());
+        tank.classList.remove("melted");
+        dialogue.innerHTML = openingDialogue;
+        for (const button of careButtons) button.disabled = false;
+        resetButton.hidden = true;
+        updateTank();
+        aquarium.querySelector('[data-action="feed"]').focus();
+        return;
+      }
+      if (!action || melted) return;
+      if (action === "salinity") {
+        showSalinity(salinities.hidden);
+        showTemperature(false);
+        return;
+      }
+      if (action === "temperature") {
+        showSalinity(false);
+        showTemperature(temperatures.hidden);
+        return;
+      }
+
+      const now = performance.now();
+      recentActions = recentActions.filter(time => now - time < 5000);
+      recentActions.push(now);
+      let message = "";
+      if (action === "feed") {
+        feedingCount += 1;
+        recentFeedings = recentFeedings.filter(time => now - time < 15000);
+        recentFeedings.push(now);
+        message = "먹이를 줬어요";
+      }
+      if (action === "warmer") temperature += 1;
+      if (action === "cooler") temperature -= 1;
+      if (action === "saltier") salinity += 1;
+      if (action === "fresher") salinity -= 1;
+      if (action === "pump") {
+        pumpOn = !pumpOn;
+        clearTimeout(pumpTimer);
+        if (!pumpOn) pumpTimer = setTimeout(() => melt("수류 부족"), 15000);
+      }
+      if (recentFeedings.length >= 4) melt("먹이 과다");
+      else if (temperature < 19 || temperature > 25) melt("온도 범위 이탈");
+      else if (salinity < 30 || salinity > 38) melt("염도 범위 이탈");
+      else if (recentActions.length >= 7) melt("수조를 너무 자주 조작했어요");
+      else updateTank(message);
+    });
+
+    updateTank();
+
+    // Editable page content. Empty fields remain clearly marked until supplied.
+    const popupContent = {
+      info: { title: "info", body: "" },
+      pair: { title: "pair +@", body: "" },
+      list: { title: "list", body: "아직 등록된 항목이 없습니다." }
+    };
+    const backupPosts = [];
+    const popup = document.querySelector(".site-popup");
+    const popupTitle = document.querySelector("#popup-title");
+    const popupBody = document.querySelector(".popup-body");
+    function paragraph(text, empty = false) {
+      const p = document.createElement("p");
+      p.textContent = text;
+      if (empty) p.className = "empty-copy";
+      return p;
+    }
+    function showPost(post) {
+      popupTitle.textContent = post.title;
+      const backButton = document.createElement("button");
+      backButton.className = "back-to-list";
+      backButton.textContent = "← 목록으로";
+      backButton.onclick = showBackup;
+      popupBody.replaceChildren(backButton, paragraph(post.body));
+    }
+    function showBackup() {
+      popupTitle.textContent = "backup";
+      popupBody.replaceChildren();
+      if (!backupPosts.length) {
+        popupBody.append(paragraph("아직 등록된 글이 없습니다.", true));
+        return;
+      }
+      const list = document.createElement("ul");
+      list.className = "backup-list";
+      backupPosts.forEach(post => {
+        const item = document.createElement("li");
+        const button = document.createElement("button");
+        button.textContent = post.title;
+        button.onclick = () => showPost(post);
+        item.append(button); list.append(item);
+      });
+      popupBody.append(list);
+    }
+
+    const characterSpecimens = [{"id":"octopus","name":"문어","file":"octopus.png","portrait":"portrait-octopus.png"},{"id":"lionfish","name":"쏠배감펭","file":"lionfish.png","portrait":"portrait-lionfish.png"},{"id":"jellyfish","name":"해파리","file":"jellyfish-complete.png","portrait":"../portrait-2.png"},{"id":"seahorse","name":"해마","file":"seahorse.png","portrait":"portrait-seahorse.png"},{"id":"beluga","name":"벨루가","file":"beluga.png","portrait":"portrait-beluga.png"},{"id":"starfish","name":"불가사리","file":"starfish.png","portrait":"portrait-starfish.png"},{"id":"otter","name":"해달","file":"otter.png","portrait":"portrait-otter.png"},{"id":"turtle","name":"바다거북","file":"turtle.png","portrait":"portrait-turtle.png"},{"id":"hammerhead","name":"망치상어","file":"hammerhead.png","portrait":"portrait-hammerhead.png"}];
+    const additionalCharacterProfiles = {"otter":{"title":"RUST(반우진)","meta":"37, 188cm, 09.27","color":"#F08A24","lineage":"티탄-이아페토스","song":"TWO PLATES","url":"https://youtu.be/9B9lBGDdygI?si=P7tol-TeRUf3kCn4","paragraphs":["전직 외과의, 그는 손으로 시간을 빼았는다. 아내와 사별 후 테미스에 들어왔다. OLYMPIAN 소속 센티넬, 팀 내 최연장자.","멜트가 테미스에서 만든 아빠야. 아침부터 저녁까지 항상 맛있는 음식을 해줘, 멜트는 아빠 덕분에 3kg나 쪘어.","엄마나 아빠같은 건 가져본 적 없지만, 가끔 생각해. 이런 사람이 아빠고, 이런 행동이 가족끼리 하는 거구나... 하고.","사랑하는 가족이 있었대, 지금은 없지만. 그 얘기는 자주 안 해, 아빠 표정이 슬퍼보여서.","그래도 만약에, 멜트에게도 엄마 아빠가 있었다면... 러스트 아빠와 아빠의 소중한 사람 같은 엄마 아빠가 있었으면 좋았을 텐데, 라고 생각해."]},"starfish":{"title":"KNELL(카즈마)","meta":"외형 20대, 190cm, 11.12","color":"#007552","lineage":"타르타로스-타나토스","song":"ヘラヘラ","url":"https://youtu.be/rgXkgRSQq8Q?si=u84CIIKjuDDiKOJ6","paragraphs":["각성자의 시체에서 추출한 에코를 이식받은 실험체. 치명상을 입어도 재생할 수 있다. OLYMPIAN 소속 센티넬.","멜트 부하 1호! 그리고 동생이야. 다른 사람들은 내가 동생 아니냐는데, 키가 작아서 그렇지 내가 누나 맞아.","멜트처럼 가족도 없고 혼자였대, 하지만 난 실험은 안 당했어. MUSE팀에 자주 같이 놀러가.","아빠들한테 용돈 받으면 같이 편의점에 가서 과자랑 젤리를 많이 사, 물론 사온 다음에는 혼도 같이 나고.","소중한 부하야, 다쳐도 재생할 수 있고 아프지도 않아 하지만 보고있으면 내가 다 아픈 기분이야."]},"seahorse":{"title":"LUMEN(라키안 아스테어)","meta":"22, 180cm, 12.19","color":"#BD0013","lineage":"티탄-히메로스","song":"Noli Timere","url":"https://youtu.be/aUGdVOucc18?si=_p_9OT-6nH6eIK2V","paragraphs":["흰 베일로 얼굴을 가린 MUSE팀 소속 가이드. 그의 얼굴을 본 사람들은 모두 사건사고에 휘말렸다. 그는 자신의 얼굴이, 능력이, 사람들을 파괴할까 두려워 한다.","멜트도 아직 루멘의 얼굴을 본 적 없어. 처음엔 너무 궁금해서 막 뺏어보려고 했었는데...","피피한테 처음으로 혼났어, 그것도 엄청. 시설에서 나온 이후로 바닥에 무릎꿇고 손 든 건 처음이었어.","항상 움츠리고, 말도 더듬고, 동갑인 나한테도 존댓말. 멜트는 친구라고 생각하는데.","멜트는 그런 거 안믿어, 루멘의 얼굴을 보면 저주받는다는 거. 말이 안돼! 루멘처럼 착한 사람은 그런 거 없어."]},"beluga":{"title":"PIPI(필리포 피오레)","meta":"27, 188cm, 08.14","color":"#9ED0FF","lineage":"올림포스-헤스티아","song":"Culla d'Argento","url":"https://youtu.be/L6bDmop6Q60?si=4I8uVpn_K3zJU0m5","paragraphs":["상냥하고 친절한 MUSE팀 소속 가이드. 사람들에게 애칭을 붙여주고, 화롯불의 온기를 나누어 준다. 애교가 많고 포옹을 좋아하는 7남매 중 셋째.","피피는 멜트랑 가~장 친한 가이드야!","멜트가 생일이 없을 때, 피피랑 같이 달력 보면서 정했어. 그래서 지금은 11월 14일이 멜트 생일이고, 피피가 케이크를 구워.","멜트한테 공주님이라고 불러주고, 또 머리 아플때 가면 푹 잘 수 있게 해줘. 그래서 멜트는 피피가 좋아.","피피는 착한 사람이야, 그러니까 친절하게 대해줘. 피피의 상냥함이, 화롯불이 꺼지지 않도록..."]},"octopus":{"title":"VENOM(강독무)","meta":"46, 201cm, 11.12","color":"#6CFD33","lineage":"타르타로스 - 티폰","song":"MAYDAY","url":"https://youtu.be/z4cHtwtdxeA?si=4ji0-WTvaXJcZxqO","paragraphs":["OLYMPIAN 팀에서 ZERO팀의 신임 팀장으로 이동. ZERO팀 소속 센티넬. 타인에게는 무표정, 무관심, 무뚝뚝한 거구. 멜트에게 만큼은 통제불가 주접 직진형. 절대로 벗지 않는 풀 페이스 형광 초록 헬멧.","키가 너무 커, 멜트는 베놈이랑 있으면 다음 날 목이 아파.","뱀이랑 놀게 해줘서 좋긴 한데, 좀 부담스러워. 자꾸 손 잡자고 하고... 베놈은 센티넬이잖아? 손을 잡아도 아무 효과도 없는걸.","헬멧 안쪽이 궁금해서 물어볼 때 마다 '오늘 밤 아저씨 방에 오면 보여줄게♡' 라고 해.","아빠들이 막아서 한 번도 못 가봤지만, 언젠가 꼭 얼굴을 보고싶어.","가끔 방에 들어가면 베놈이 데리고 다니는 뱀이 있어, 어떻게 들어온거지? 나가라고 하면 순순히 나가니까 괜찮은거겠지?"]},"turtle":{"title":"VANGUARD(데이비드 하트)","meta":"33, 190cm, 04.20","color":"#3DBEFF","lineage":"티탄-보레아스","song":"Still standing","url":"https://youtu.be/vOVE35p1SbA?si=6IGEP2Ndde6OPoIN","paragraphs":["전 미 공군 소령, 전투기 조종사였다. 이라크에서 이형의 습격으로 동료들을 잃고 각성의 영향으로 한쪽 눈을 잃은 뒤 테미스에 합류했다. OLYMPIAN 소속 센티넬, 팀장.","멜트가 테미스에서 만든 또 다른 아빠야. 선글라스가 아주 멋있어.","담배냄새가 좀 많이 나지만, 그것도 좋아. 멜트는 이제 냄새만 맡아도 아빠 담배인지 아닌지 맞출 수 있어.","텍사스에 있는 큰 농장에서 자랐대. 그래서 멜트가 아팠을 때 농장에 있는 소 얘기를 해줬어. 버터컵이라는 젖소 얘기를 많이 해줬는데, 직접 보러 가고 싶어.","저번에 아빠의 아빠에게 멜트가 편지를 보냈어, 영어는 아빠랑 배웠고. 잘 지내고 있고, 지금은 내 자랑스럽고 소중한 아빠라고 썼어. 젖소 그림이랑 같이."]},"jellyfish":{"title":"MELT(강하리)","meta":"22, 152cm, 11.14","color":"#FFB9CB","lineage":"크세노스-두르가","song":"HOME","url":"https://youtu.be/32W5oer3jiY","paragraphs":["아동보호시설 출신, 연고 있는 가족 전무. 17세에 각성해 테미스에 들어왔다, 가지고 온 것은 시설에서 가지고 있던 법적 서류들과 통장, 그리고 모서리가 구겨진 동물 도감, 문구류가 담긴 낡은 골판지 상자 하나. OLYMPIAN 소속 센티넬.","멜트는 태어나자마자 시설에서 자랐어, 엄마랑 아빠가 생기지 않아서 시설에서도 오래 남아있는 사람 중 하나였고. 시기가 어긋나면 계속 어긋난다는 걸 그래서 처음 알았어, 첫 단추를 잘 꿰어야 한다는 말이 그런걸까?","테미스에 처음 와서도 혼자였어, 그렇게 큰 식당은 처음 가봤거든. 식판을 들고 줄을 쳐다보고 있는데 내 자리가 안 나오더라고, 그 때 누가 내 머리를 쓰다듬으면서 데리고 가서 밥을 같이 먹어줬는데... 그 기억이 잘 안나. 내가 지워달라고 했었나봐.","지금은 시민들한테 인기도 많고, 테미스에서 멜트 모르면 간첩이야. 친구도 엄청 많고.","그래도 가끔은, 내 부모님이나 텅 비어있는 그 기억 속 오빠가 누구인지 궁금해."]}};
+    function openCharacter(specimen, restoreFocus = false) {
+      popupTitle.textContent = specimen.id === "hammerhead" ? "VEIN(서도혁)" : specimen.id === "lionfish" ? "SWEEPER(잭슨 블랙우드)" : additionalCharacterProfiles[specimen.id]?.title || specimen.name;
+      const backButton = document.createElement("button");
+      backButton.className = "character-back";
+      backButton.textContent = "← 도감으로";
+      backButton.onclick = () => {
+        showPair();
+        popupBody.querySelector('[data-specimen="' + specimen.id + '"]').focus();
+      };
+      const detail = document.createElement("article");
+      detail.className = "character-detail";
+      const picture = document.createElement("img");
+      picture.src = "./pair/" + (specimen.portrait || specimen.file);
+      picture.alt = specimen.name;
+      const copy = document.createElement("div");
+      const title = document.createElement("h3");
+      title.textContent = specimen.id === "hammerhead" ? "VEIN(서도혁)" : specimen.id === "lionfish" ? "SWEEPER(잭슨 블랙우드)" : additionalCharacterProfiles[specimen.id]?.title || specimen.name;
+      picture.alt = title.textContent;
+      copy.append(title);
+      if (specimen.id === "hammerhead") {
+        detail.classList.add("has-profile");
+        const metadata = document.createElement("p");
+        const colorChip = document.createElement("span");
+        colorChip.className = "character-color-chip";
+        colorChip.setAttribute("aria-hidden", "true");
+        metadata.append("30, 188cm, 11.23, #1C43FF ", colorChip, ", 올림포스 - 포세이돈");
+        metadata.className = "character-metadata";
+        const music = document.createElement("p");
+        music.className = "character-music";
+        const link = document.createElement("a");
+        link.href = "https://youtu.be/X_m7vB6gqT8?si=vVEluloFDy0Ns0Qx";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        const bold = document.createElement("strong");
+        bold.textContent = "UNDERTOW";
+        link.append(bold);
+        music.append(link);
+        copy.append(metadata, music,
+          paragraph("전직 형사, 누명을 쓰고 2년간 복역한 뒤 테미스에 합류했다. OLYMPIAN 소속 센티넬."),
+          paragraph("멜트 짝꿍이야. 멜트에게 처음으로 수족관을 보여준 사람이고."),
+          paragraph("멜트는 베인이 좋아. 까칠하고 가끔 딱밤도 놓는데, 그게 다 걱정에서 나온 행동인거 알고 있어. 바다에 부모님을 잃었대, 난 처음부터 없었고."),
+          paragraph("대신 할머니가 있대, 그건 좀 부러워. 다음에는 같이 할머니네 집에 갈거야. 베인이 지하철 타는 법도 알려주고, 손 잡고 가면 되니까."),
+          paragraph("...아, 그래서 멜트는 다음 생에 해파리로 태어나면 안된대. 베인 손 잡아줘야 되거든.")
+        );
+      } else if (specimen.id === "lionfish") {
+        detail.classList.add("has-profile");
+        const metadata = document.createElement("p");
+        metadata.className = "character-metadata";
+        const colorChip = document.createElement("span");
+        colorChip.className = "character-color-chip";
+        colorChip.style.backgroundColor = "#18726C";
+        colorChip.setAttribute("aria-hidden", "true");
+        metadata.append("34, 194cm, 09.18, #18726C ", colorChip, ", 타르타로스-네메시스");
+        const music = document.createElement("p");
+        music.className = "character-music";
+        const link = document.createElement("a");
+        link.href = "https://youtu.be/ACUk5yS1Fec?si=9EAfC0pH_rcEtfq0";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.style.color = "#18726C";
+        const bold = document.createElement("strong");
+        bold.textContent = "LEAST OF ALL ME";
+        link.append(bold);
+        music.append(link);
+        copy.append(metadata, music,
+          paragraph("전 미 육군 레인저. 내부고발 묵살 후 불명예 제대했다. 민간 군사 회사에서 용병으로 일하던 중 각성해 테미스에 합류. SPECTER 소속 센티넬."),
+          paragraph("멜트 친구 중 한명이야. 팀이 달라서 많이 만나지는 못하지만, 멜트가 가끔 아빠들 심부름으로 스펙터 팀 도와주러 가."),
+          paragraph("내가 잭슨이라고 부르면 '...스위퍼라고 불러라.'하고 고개를 돌려, 그래도 난 계속 잭슨이라고 해. 그러면 한숨 쉬고 알아서 하라고 하거든."),
+          paragraph("잘생겼는데 항상 얼굴을 가리고 있어, 저번에 물어봤는데 팀원들도 본 적 없대."),
+          paragraph("사실 난 본 적 있어. 다쳤을 때 멜트가 귀여운 밴드 붙여줬거든.")
+        );
+      } else if (additionalCharacterProfiles[specimen.id]) {
+        const profile = additionalCharacterProfiles[specimen.id];
+        detail.classList.add("has-profile");
+        const metadata = document.createElement("p");
+        metadata.className = "character-metadata";
+        const colorChip = document.createElement("span");
+        colorChip.className = "character-color-chip";
+        colorChip.style.backgroundColor = profile.color;
+        colorChip.setAttribute("aria-hidden", "true");
+        metadata.append(profile.meta + ", " + profile.color + " ", colorChip, ", " + profile.lineage);
+        const music = document.createElement("p");
+        music.className = "character-music";
+        const link = document.createElement("a");
+        link.href = profile.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.style.color = profile.color;
+        const bold = document.createElement("strong");
+        bold.textContent = profile.song;
+        link.append(bold);
+        music.append(link);
+        copy.append(metadata, music, ...profile.paragraphs.map(text => paragraph(text)));
+      } else {
+        copy.append(paragraph("캐릭터 소개가 아직 등록되지 않았습니다.", true));
+      }
+      detail.append(picture, copy);
+      popupBody.replaceChildren(backButton, detail);
+      popup.scrollTop = 0;
+      if (restoreFocus) backButton.focus();
+    }
+    function showPair() {
+      popupTitle.textContent = "pair +@";
+      const heading = document.createElement("header");
+      heading.className = "specimen-heading";
+      const title = document.createElement("h3");
+      title.textContent = "PAIR +@";
+      const subtitle = document.createElement("p");
+      subtitle.textContent = "캐릭터 도감";
+      heading.append(title, subtitle);
+      const plate = document.createElement("div");
+      plate.className = "specimen-plate";
+      const index = document.createElement("ol");
+      index.className = "specimen-index";
+      characterSpecimens.forEach((specimen, i) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "specimen specimen-" + specimen.id;
+        button.dataset.specimen = specimen.id;
+        button.setAttribute("aria-label", specimen.name + " 캐릭터 상세 보기");
+        const picture = document.createElement("img");
+        picture.src = "./pair/" + specimen.file;
+        picture.alt = "";
+        const label = document.createElement("span");
+        label.className = "specimen-label";
+        label.textContent = String(i + 1).padStart(2, "0");
+        button.append(picture, label);
+        button.onclick = () => openCharacter(specimen, true);
+        plate.append(button);
+        const item = document.createElement("li");
+        const link = document.createElement("button");
+        link.type = "button";
+        link.textContent = label.textContent + " " + specimen.name;
+        link.onclick = () => openCharacter(specimen, true);
+        item.append(link); index.append(item);
+      });
+      const preview = document.createElement("figure");
+      preview.className = "specimen-preview";
+      preview.setAttribute("aria-hidden", "true");
+      const previewImage = document.createElement("img");
+      previewImage.alt = "";
+      preview.append(previewImage);
+      const wire = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      wire.classList.add("specimen-preview-wire");
+      wire.setAttribute("aria-hidden", "true");
+      const path = document.createElementNS(wire.namespaceURI, "path");
+      wire.append(path);
+      plate.append(wire, preview);
+      function hidePreview() {
+        preview.classList.remove("visible");
+        wire.classList.remove("visible");
+      }
+      plate.querySelectorAll(".specimen").forEach(button => {
+        const specimen = characterSpecimens.find(item => item.id === button.dataset.specimen);
+        if (!specimen.portrait) return;
+        const show = () => {
+          if (!plate.isConnected) return;
+          previewImage.src = "./pair/" + specimen.portrait;
+          const root = plate.getBoundingClientRect();
+          const rect = button.getBoundingClientRect();
+          const cx = rect.x + rect.width / 2 - root.x;
+          const cy = rect.y + rect.height / 2 - root.y;
+          const width = preview.getBoundingClientRect().width;
+          const height = width * 1.25;
+          const toRight = cx < root.width * .5;
+          const x = Math.max(5, Math.min(root.width - width - 5,
+            cx + (toRight ? rect.width * .23 : -rect.width * .23 - width)));
+          const y = Math.max(5, Math.min(root.height - height - 5, cy - height * .75));
+          preview.style.left = x + "px";
+          preview.style.top = y + "px";
+          path.setAttribute("d", `M${cx} ${cy} L${toRight ? x : x + width} ${y + height * .5}`);
+          preview.classList.add("visible");
+          wire.classList.add("visible");
+        };
+        button.addEventListener("pointerenter", show);
+        button.addEventListener("pointerleave", () => {
+          if (document.activeElement !== button) hidePreview();
+        });
+        button.addEventListener("focus", show);
+        button.addEventListener("blur", hidePreview);
+      });
+      popupBody.replaceChildren(heading, plate, index);
+      popup.scrollTop = 0;
+    }
+
+
+    const gachaProducts = [{"id":"isopod","name":"바다등각류","fortunes":["조용히 쌓아온 일이 제자리를 찾아가는 날이에요. 서둘러 답을 내기보다 한 걸음 물러나 살펴보세요. 놓쳤던 작은 단서가 다음 선택을 편하게 만들어줄 거예요.","복잡한 일도 작은 순서로 나누면 풀리는 날이에요. 남의 속도에 맞추기보다 익숙한 리듬을 지켜보세요. 오늘 끝낸 사소한 한 가지가 생각보다 큰 안도감을 줄 거예요."]},{"id":"seal","name":"물범","fortunes":["다정한 말 한마디가 분위기를 바꿔주는 날이에요. 먼저 안부를 묻거나 작은 고마움을 전해보세요. 무리해서 잘 보이려 하지 않아도 편안한 당신의 모습이 좋은 인연을 불러올 거예요.","혼자 해결하려고 품고 있던 일을 나눠도 괜찮은 날이에요. 가까운 사람의 사소한 제안에서 힌트를 얻을 수 있어요. 할 일을 마친 뒤에는 좋아하는 간식과 함께 푹 쉬어보세요."]},{"id":"turtle","name":"바다거북","fortunes":["느리게 가도 방향만 맞으면 충분한 날이에요. 당장의 반응에 흔들리지 말고 오래 가져갈 선택을 해보세요. 미뤄둔 일을 조금만 정리해도 마음이 한결 가벼워질 거예요.","꾸준히 돌봐온 관계와 일이 힘이 되어주는 날이에요. 새로운 계획을 잔뜩 더하기보다 이미 시작한 것을 챙겨보세요. 잠깐의 산책이 생각을 맑게 하고 다음 걸음을 알려줄 거예요."]},{"id":"octopus","name":"문어","fortunes":["서로 달라 보이던 생각이 하나로 이어지는 날이에요. 떠오르는 아이디어를 가볍게 적어두세요. 꼭 정답을 고르려 하지 않을 때 당신에게 맞는 독특한 방법이 보일 거예요.","상황에 맞춰 유연하게 움직이면 편해지는 날이에요. 예상과 조금 달라져도 실패라고 단정하지 마세요. 익숙한 길에서 한 번만 방향을 바꿔보면 반가운 발견을 할 수 있어요."]},{"id":"hammerhead","name":"귀상어","fortunes":["평소보다 시야가 넓어지는 날이에요. 한 가지 답에 매달리기보다 주변의 이야기를 함께 살펴보세요. 먼저 손을 내밀면 혼자서는 찾지 못했던 든든한 짝꿍이나 해결책을 만날 수 있어요.","망설였던 일의 첫 단추를 끼우기 좋은 날이에요. 단번에 끝내려 하지 말고 오늘 할 수 있는 만큼만 시작해보세요. 솔직한 한마디와 차분한 태도가 당신의 편을 늘려줄 거예요."]},{"id":"plesiosaur","name":"수장룡","fortunes":["오래 묵혀둔 취향이나 계획이 다시 빛나는 날이에요. 예전에 좋아했던 음악이나 메모를 꺼내보세요. 잊고 있던 즐거움이 새 아이디어와 의외의 대화를 데려올 거예요.","상상하던 일을 작게 시험해보기 좋은 날이에요. 완벽한 준비를 기다리기보다 간단한 첫 시도를 남겨보세요. 뜻밖의 재미를 발견하면 그 감각을 믿고 조금 더 나아가도 좋아요."]},{"id":"seahorse","name":"해마","fortunes":["작은 약속을 지키는 마음이 행운이 되는 날이에요. 가까운 사람과의 대화를 서두르지 말고 끝까지 들어보세요. 세심한 배려가 돌아와 평범한 하루를 특별하게 만들어줄 거예요.","좋아하는 것 곁에서 에너지를 충전하는 날이에요. 남에게 설명하기 어려운 소소한 취향도 오늘은 아껴주세요. 당신다운 선택을 하나 남기면 마음이 편안해지고 다음 일도 잘 풀릴 거예요."]}];
+    const gachaLuckyItems = ["작은 노트", "파란 볼펜", "조개 모양 소품", "좋아하는 책", "편한 운동화", "손수건", "반짝이는 키링", "텀블러", "이어폰", "엽서", "작은 파우치", "동전 지갑"];
+    const gachaLuckyColors = [
+      { name: "바다 파랑", hex: "#1C43FF" }, { name: "민트", hex: "#A2D8C8" },
+      { name: "연보라", hex: "#BCA7F5" }, { name: "산호 분홍", hex: "#ED9AAF" },
+      { name: "하늘색", hex: "#98D5EF" }, { name: "진주빛", hex: "#EEE9E0" },
+      { name: "청록", hex: "#3D9D9B" }, { name: "레몬 노랑", hex: "#F1D76A" }
+    ];
+    const gachaLuckyFoods = ["딸기 케이크", "따뜻한 우동", "오므라이스", "달걀 샌드위치", "복숭아 요거트", "단팥빵", "크림 파스타", "주먹밥", "바나나 팬케이크", "감자 수프", "귤", "초코 쿠키"];
+    let gachaTypingTimer, gachaRevealTimer, gachaRun = 0;
+    function cancelGacha() {
+      clearInterval(gachaTypingTimer);
+      clearTimeout(gachaRevealTimer);
+      gachaRun += 1;
+      popupBody.removeAttribute("aria-busy");
+    }
+    function gachaPick(values) {
+      const random = new Uint32Array(1);
+      crypto.getRandomValues(random);
+      return values[random[0] % values.length];
+    }
+    function showGachaResult(run) {
+      if (run !== gachaRun || !popup.open || !popup.classList.contains("gacha-popup")) return;
+      const product = gachaPick(gachaProducts);
+      const color = gachaPick(gachaLuckyColors);
+      const result = document.createElement("article");
+      result.className = "gacha-result";
+      result.dataset.product = product.id;
+      const image = document.createElement("img");
+      image.className = "gacha-prize";
+      image.src = "./gacha/" + product.id + ".png";
+      image.alt = product.name + " 인형";
+      const copy = document.createElement("div");
+      const eyebrow = paragraph("오늘의 당신의 짝꿍");
+      eyebrow.className = "gacha-eyebrow";
+      const title = document.createElement("h3");
+      title.textContent = product.name;
+      title.tabIndex = -1;
+      const fortune = paragraph(gachaPick(product.fortunes));
+      fortune.className = "gacha-fortune";
+      const luck = document.createElement("dl");
+      luck.className = "gacha-luck";
+      for (const [label, value] of [
+        ["행운의 물건", gachaPick(gachaLuckyItems)],
+        ["행운의 컬러", color.name + " " + color.hex],
+        ["행운의 음식", gachaPick(gachaLuckyFoods)]
+      ]) {
+        const row = document.createElement("div");
+        const dt = document.createElement("dt");
+        const dd = document.createElement("dd");
+        dt.textContent = label; dd.textContent = value;
+        if (label === "행운의 컬러") {
+          const swatch = document.createElement("i");
+          swatch.className = "gacha-color";
+          swatch.style.backgroundColor = color.hex;
+          swatch.setAttribute("aria-hidden", "true");
+          dd.prepend(swatch);
+        }
+        row.append(dt, dd); luck.append(row);
+      }
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.className = "gacha-again";
+      retry.textContent = "다시 뽑기";
+      retry.onclick = showGacha;
+      copy.append(eyebrow, title, fortune, luck, retry);
+      result.append(image, copy);
+      popupBody.replaceChildren(result);
+      popupBody.removeAttribute("aria-busy");
+      popup.scrollTop = 0;
+      title.focus({ preventScroll: true });
+    }
+    function showGacha() {
+      cancelGacha();
+      const run = gachaRun;
+      popupTitle.textContent = "gacha";
+      popupBody.setAttribute("aria-busy", "true");
+      const loader = document.createElement("div");
+      loader.className = "gacha-loading";
+      const capsule = document.createElement("img");
+      capsule.src = "./gacha/capsule.png";
+      capsule.alt = "";
+      const phrase = "오늘의 당신의 짝꿍이 될 해양생물은...";
+      const typing = document.createElement("p");
+      typing.className = "gacha-typing";
+      typing.setAttribute("role", "status");
+      typing.setAttribute("aria-label", phrase);
+      const visibleText = document.createElement("span");
+      visibleText.setAttribute("aria-hidden", "true");
+      typing.append(visibleText);
+      loader.append(capsule, typing);
+      popupBody.replaceChildren(loader);
+      const letters = Array.from(phrase);
+      let count = 0;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        visibleText.textContent = phrase;
+        gachaRevealTimer = setTimeout(() => showGachaResult(run), 1600);
+        return;
+      }
+      gachaTypingTimer = setInterval(() => {
+        if (run !== gachaRun || !popup.open) { clearInterval(gachaTypingTimer); return; }
+        visibleText.textContent = letters.slice(0, ++count).join("");
+        if (count === letters.length) {
+          clearInterval(gachaTypingTimer);
+          gachaRevealTimer = setTimeout(() => showGachaResult(run), 650);
+        }
+      }, 75);
+    }
+    popup.addEventListener("close", cancelGacha);
+
+    document.querySelectorAll("[data-popup]").forEach(button => {
+      button.addEventListener("click", () => {
+        const kind = button.dataset.popup;
+        popup.classList.toggle("info-popup", kind === "info");
+        popup.classList.toggle("pair-popup", kind === "pair");
+        popup.classList.toggle("gacha-popup", kind === "gacha");
+        popupBody.removeAttribute("aria-busy");
+        if (kind === "info") {
+          popupTitle.textContent = "info";
+          popupBody.replaceChildren(document.querySelector("#info-layout").content.cloneNode(true));
+        }
+        else if (kind === "gacha") showGacha();
+        else if (kind === "pair") showPair();
+        else if (kind === "backup") showBackup();
+        else {
+          popupTitle.textContent = popupContent[kind].title;
+          popupBody.replaceChildren(paragraph(popupContent[kind].body ||
+            (kind === "info" ? "소개가 아직 등록되지 않았습니다." : "캐릭터 관계 소개가 아직 등록되지 않았습니다."),
+            !popupContent[kind].body));
+        }
+        popup.showModal();
+      });
+    });
+    document.querySelector(".popup-close").onclick = () => popup.close();
+    popup.addEventListener("click", event => {
+      const r = popup.getBoundingClientRect();
+      if (event.target === popup && (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom)) popup.close();
+    });
+
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    new ResizeObserver(() => {
+      tank.style.setProperty("--swim-rise", (tank.clientHeight + 160) + "px");
+      tank.style.setProperty("--swim-run", tank.clientWidth * .38 + "px");
+    }).observe(tank);
+    function dissolveJellies() {
+      if (reducedMotion.matches) return;
+      const bounds = tank.getBoundingClientRect();
+      tank.querySelectorAll(".jelly").forEach(jelly => {
+        const r = jelly.getBoundingClientRect();
+        const left = Math.max(0, r.left - bounds.left);
+        const top = Math.max(0, r.top - bounds.top);
+        const right = Math.min(bounds.width, r.right - bounds.left);
+        const bottom = Math.min(bounds.height, r.bottom - bounds.top);
+        if (right <= left || bottom <= top) return;
+        for (let i = 0; i < 64; i++) {
+          const dot = document.createElement("i");
+          dot.className = "melt-particle";
+          dot.style.left = (left + Math.random() * (right - left)) + "px";
+          dot.style.top = (top + Math.random() * (bottom - top)) + "px";
+          tank.append(dot);
+          const animation = dot.animate([
+            { transform: "translate(0, 0)", opacity: .75 },
+            { transform: `translate(${(Math.random() - .5) * 65}px, ${15 + Math.random() * 38}px)`, opacity: 0 }
+          ], { duration: 900 + Math.random() * 900, easing: "ease-out", fill: "forwards" });
+          animation.onfinish = () => dot.remove();
+        }
+      });
+    }
+
+    // A traveling lateral wave grows from the steady head toward the tail.
+    const sharkImage = document.querySelector("img.shark");
+    let sharkCanvas, sharkContext, sharkFrame;
+    function drawShark(now) {
+      if (!sharkCanvas || reducedMotion.matches) return;
+      const w = sharkCanvas.width, h = sharkCanvas.height;
+      sharkContext.clearRect(0, 0, w, h);
+      const phase = now / 1000 * 2.4;
+      for (let y = 0; y < h; y += 3) {
+        const along = y / h;
+        const amplitude = 1.5 + 18 * Math.pow(along, 2.2);
+        const shift = Math.sin(phase - along * 5.4) * amplitude;
+        sharkContext.drawImage(sharkImage, 0, y, w, Math.min(3, h - y),
+          shift, y, w, Math.min(3, h - y));
+      }
+      sharkFrame = requestAnimationFrame(drawShark);
+    }
+    function startShark() {
+      if (!sharkImage.naturalWidth || sharkCanvas || reducedMotion.matches) return;
+      sharkCanvas = document.createElement("canvas");
+      sharkCanvas.className = "shark";
+      sharkCanvas.width = sharkImage.naturalWidth;
+      sharkCanvas.height = sharkImage.naturalHeight;
+      sharkCanvas.setAttribute("role", "img");
+      sharkCanvas.setAttribute("aria-label", sharkImage.alt);
+      sharkContext = sharkCanvas.getContext("2d");
+      sharkImage.after(sharkCanvas);
+      sharkImage.hidden = true;
+      sharkImage.style.display = "none";
+      sharkFrame = requestAnimationFrame(drawShark);
+    }
+    sharkImage.addEventListener("load", startShark);
+    startShark();
+    document.addEventListener("visibilitychange", () => {
+      cancelAnimationFrame(sharkFrame);
+      if (!document.hidden && sharkCanvas && !reducedMotion.matches) sharkFrame = requestAnimationFrame(drawShark);
+    });
+    reducedMotion.addEventListener("change", () => {
+      cancelAnimationFrame(sharkFrame);
+      sharkImage.style.display = reducedMotion.matches ? "block" : "none";
+      if (sharkCanvas) {
+        sharkCanvas.style.display = reducedMotion.matches ? "none" : "block";
+        if (!reducedMotion.matches) sharkFrame = requestAnimationFrame(drawShark);
+      } else startShark();
+    });
+
+    const bgm = document.querySelector(".page-music");
+    const bgmPlay = bgm.querySelector(".bgm-play");
+    const bgmPause = bgm.querySelector(".bgm-pause");
+    const bgmStatus = bgm.querySelector(".bgm-status");
+    const bgmVolume = bgm.querySelector('input[type="range"]');
+    const volumeToggle = bgm.querySelector(".bgm-volume-toggle");
+    const volumePanel = bgm.querySelector(".bgm-volume-panel");
+    let bgmPlayer, bgmLoading = false, bgmReady = false, bgmWanted = false;
+    function loadMusicAPI() {
+      if (window.YT?.Player) return Promise.resolve();
+      return new Promise((resolve, reject) => {
+        const previous = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => { previous?.(); resolve(); };
+        const script = document.createElement("script");
+        script.src = "https://www.youtube.com/iframe_api";
+        script.onerror = reject;
+        document.head.append(script);
+      });
+    }
+    bgmPlay.addEventListener("click", async () => {
+      bgmWanted = true;
+      if (bgmReady) { bgmPlayer.playVideo(); return; }
+      if (bgmLoading) return;
+      bgmLoading = true;
+      bgmStatus.textContent = "불러오는 중";
+      bgm.querySelector(".bgm-engine").hidden = false;
+      try {
+        await loadMusicAPI();
+        bgmPlayer = new YT.Player("bgm-youtube", {
+          width: "200", height: "113", videoId: "t1cC3pdFODA",
+          playerVars: { playsinline: 1, rel: 0, loop: 1, playlist: "t1cC3pdFODA" },
+          events: {
+            onReady: () => {
+              bgmReady = true;
+              bgmPlayer.setVolume(Number(bgmVolume.value));
+              bgmStatus.textContent = "";
+              if (bgmWanted) bgmPlayer.playVideo();
+            },
+            onStateChange: event => {
+              if (event.data === YT.PlayerState.ENDED && bgmWanted) {
+                bgmPlayer.seekTo(0, true);
+                bgmPlayer.playVideo();
+              }
+              const playing = event.data === YT.PlayerState.PLAYING;
+              bgmPlay.setAttribute("aria-pressed", String(playing));
+              bgmPause.setAttribute("aria-pressed", String(event.data === YT.PlayerState.PAUSED));
+              if (playing) bgmStatus.textContent = "";
+            },
+            onError: () => { bgmStatus.textContent = "이 영상은 여기서 재생할 수 없습니다."; },
+            onAutoplayBlocked: () => { bgmStatus.textContent = "재생을 한 번 더 눌러주세요."; }
+          }
+        });
+      } catch {
+        bgmLoading = false;
+        bgmStatus.textContent = "음악을 불러오지 못했습니다. 다시 눌러주세요.";
+      }
+    });
+    bgmPause.addEventListener("click", () => {
+      bgmWanted = false;
+      if (bgmReady) bgmPlayer.pauseVideo();
+    });
+    volumeToggle.addEventListener("click", () => {
+      volumePanel.hidden = !volumePanel.hidden;
+      volumeToggle.setAttribute("aria-expanded", String(!volumePanel.hidden));
+      if (!volumePanel.hidden) bgmVolume.focus();
+    });
+    bgmVolume.addEventListener("input", () => {
+      bgm.querySelector(".bgm-volume-panel output").textContent = bgmVolume.value + "%";
+      if (bgmReady) bgmPlayer.setVolume(Number(bgmVolume.value));
+    });
+    bgm.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !volumePanel.hidden) {
+        volumePanel.hidden = true;
+        volumeToggle.setAttribute("aria-expanded", "false");
+        volumeToggle.focus();
+      }
+    });
+  </script>
+</body>
+</html>
+
+
