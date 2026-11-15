@@ -774,7 +774,32 @@
     .credit-yyg {left:29%;top:78%;width:28%;height:6%;}
     .credit-kai {left:58%;top:90%;width:34%;height:6%;}
     .aquarium-credit-names span {white-space:nowrap;}
-    </style>
+    
+    .banner-exchange {scrollbar-color:#1C43FF #eef1ff;}
+    .banner-exchange::-webkit-scrollbar {width:5px;}
+    .banner-exchange::-webkit-scrollbar-track {background:#eef1ff;}
+    .banner-exchange::-webkit-scrollbar-thumb {background:#1C43FF;border-radius:4px;}
+    .floor-pets {position:fixed;inset:auto 0 0;height:145px;z-index:15;pointer-events:none;}
+    .floor-pet {position:absolute;bottom:8px;width:94px;pointer-events:auto;will-change:transform;}
+    .floor-pet button {display:block;width:100%;height:94px;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation;position:relative;}
+    .floor-pet img {width:100%;height:100%;object-fit:contain;transform-origin:center bottom;animation:pet-bob .8s ease-in-out infinite alternate;filter:drop-shadow(0 3px 2px #00000015);}
+    .floor-pet.pet-rode {bottom:15px;width:72px;}
+    .pet-rode button {height:80px;}
+    .pet-rode img {animation:pet-swim 2.8s ease-in-out infinite;}
+    .pet-credit {display:block;font:8px/1.4 Arial,sans-serif;text-align:center;color:#777;white-space:nowrap;}
+    .pet-name {position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #bbb;padding:3px 7px;font:10px/1.4 "Mona12",sans-serif;opacity:0;white-space:nowrap;pointer-events:none;}
+    .floor-pet:hover .pet-name,.floor-pet:focus-within .pet-name {opacity:1;}
+    .floor-pet.talking .pet-name {opacity:0;}
+    .floor-pet.pressed img {animation:pet-press .35s ease-out;}
+    .pet-speech {position:fixed;z-index:16;max-width:min(250px,calc(100vw - 24px));box-sizing:border-box;background:#fff;border:1px solid #999;padding:10px 13px;box-shadow:2px 3px 0 #0000000b;font:12px/1.6 "Mona12",sans-serif;pointer-events:none;opacity:0;transform:translateY(6px) scale(.95);transition:opacity .15s,transform .15s;}
+    .pet-speech.visible {opacity:1;transform:translateY(0) scale(1);}
+    .pet-speech::after {content:"";position:absolute;bottom:-5px;left:var(--tail,50%);width:8px;height:8px;background:#fff;border-right:1px solid #999;border-bottom:1px solid #999;transform:rotate(45deg);}
+    @keyframes pet-bob {from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-3px) rotate(2deg)}}
+    @keyframes pet-swim {0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(.96,1.04)}}
+    @keyframes pet-press {0%{transform:scale(1)}35%{transform:scale(1.12,.78) translateY(4px)}75%{transform:scale(.95,1.05)}100%{transform:scale(1)}}
+    @media(max-width:600px){.floor-pet{width:72px}.floor-pet button{height:72px}.floor-pet.pet-rode{width:54px}.pet-rode button{height:62px}.pet-speech{font-size:11px}}
+    @media(prefers-reduced-motion:reduce){.floor-pet img{animation:none}.pet-speech{transition:none}}
+</style>
 </head>
 <body>
   <main class="page" aria-label="귀상어와 초점 프레임">
@@ -1546,7 +1571,7 @@
           connections.innerHTML = '<path class="frame-network" d="M55 12 H83 V24 H60 V30 M46 36 H35 V43 H36.5 V50 M52 53 H68 V58 H86 V64 M75 67 H66 V81 H57"/><path class="fish-leaders" d="M55 17 H65 V14 H70 M46 33 H41 V32 H37 M52 53 H62 V44 H66 M75 68 H72 V65 H66 M43 78 V72 H30 V68 M43 84 V90 H68 M68 90 V85 H78 V72"/><g class="fish-markers"><rect x="70" y="12.7" width="3.5" height="2.6"/><rect x="33.5" y="30.7" width="3.5" height="2.6"/><rect x="66" y="41.4" width="3.5" height="2.6"/><rect x="62.5" y="63.7" width="3.5" height="2.6"/><rect x="26.5" y="65.4" width="3.5" height="2.6"/></g>';
           aquarium.append(connections);
           const credits = [
-            {account:"@cherrymango", names:["overload", "justice", "vibe", "Syndrome"], position:"cherry"},
+            {account:"@cherrymango", names:["오버로드", "저스티스", "바이브", "신드롬"], position:"cherry"},
             {account:"@kit", names:["표유리"], position:"kit"},
             {account:"@drake_4bko5xtfte", names:["바이스", "오닉스"], position:"drake"},
             {account:"@208x195", names:["구일오"], position:"nine"},
@@ -1731,6 +1756,42 @@
         volumeToggle.focus();
       }
     });
+  </script>
+
+  <script>
+  (() => {
+    const layer = document.createElement('div'); layer.className = 'floor-pets'; layer.setAttribute('aria-label','산책하는 캐릭터'); document.body.append(layer);
+    const speech = document.createElement('div'); speech.className = 'pet-speech'; speech.setAttribute('role','status'); speech.setAttribute('aria-live','polite'); document.body.append(speech);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const data = [
+      {id:'vein',name:'베인',credit:'@ssui6r',lines:['야, 누구 마음대로 만지래?','이새끼가 진짜...','꼬맹이, 시끄럽게 굴지 마라.'],start:.12,speed:15},
+      {id:'melt',name:'멜트',credit:'@ssui6r',lines:['아야! 멜트 머리 만지지 마!','멜트는 공주님이니까 마음대로 해도 돼, 베인은 안 돼.','또 같이 놀자!'],start:.42,speed:-20},
+      {id:'rode',name:'로데',lines:['...','말랑말랑','(천천히 유영한다...)'],start:.70,speed:10}
+    ];
+    let active, timer, last = 0;
+    const pets = data.map(info => {
+      const pet = document.createElement('div'); pet.className = 'floor-pet pet-' + info.id;
+      const button = document.createElement('button'); button.type='button';button.setAttribute('aria-label',info.name+'에게 말 걸기');
+      const image=document.createElement('img');image.src='./pet-'+info.id+'.webp';image.alt='';image.draggable=false;
+      const name=document.createElement('span');name.className='pet-name';name.textContent=info.name;button.append(image,name);pet.append(button);
+      if(info.credit){const credit=document.createElement('span');credit.className='pet-credit';credit.textContent=info.credit;pet.append(credit);}
+      layer.append(pet);
+      const state={pet,button,x:info.start*Math.max(0,innerWidth-94),speed:info.speed,pause:false,line:0};
+      button.addEventListener('pointerenter',()=>state.pause=true);button.addEventListener('pointerleave',()=>state.pause=false);
+      button.addEventListener('focus',()=>state.pause=true);button.addEventListener('blur',()=>state.pause=false);
+      button.addEventListener('click',()=>{
+        clearTimeout(timer);if(active)active.pet.classList.remove('talking');active=state;
+        pet.classList.remove('pressed');void pet.offsetWidth;pet.classList.add('pressed','talking');
+        speech.textContent=info.lines[state.line++ % info.lines.length];speech.classList.add('visible');positionSpeech();
+        timer=setTimeout(()=>{speech.classList.remove('visible');pet.classList.remove('talking');active=null;},4500);
+      });button.addEventListener('animationend',()=>pet.classList.remove('pressed'));
+      return state;
+    });
+    function positionSpeech(){if(!active)return;const r=active.pet.getBoundingClientRect();const w=speech.offsetWidth;const left=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2));speech.style.left=left+'px';speech.style.top=Math.max(12,r.top-speech.offsetHeight-12)+'px';speech.style.setProperty('--tail',Math.max(8,Math.min(w-16,r.left+r.width/2-left))+'px');}
+    function step(time){const dt=Math.min((time-last)/1000,.05);last=time;
+      for(const s of pets){const max=Math.max(0,innerWidth-s.pet.offsetWidth);if(!s.pause&&active!==s&&!reduced.matches){s.x+=s.speed*dt;if(s.x<0){s.x=0;s.speed=Math.abs(s.speed)}if(s.x>max){s.x=max;s.speed=-Math.abs(s.speed)}}s.x=Math.max(0,Math.min(max,s.x));s.pet.style.transform='translateX('+s.x+'px)';}positionSpeech();requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  })();
   </script>
 </body>
 </html>
