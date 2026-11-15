@@ -764,6 +764,16 @@
     .aquarium-connections .fish-leaders {stroke:rgba(255,255,255,.9);stroke-width:.7;}
     .aquarium-connections .fish-markers rect {fill:rgba(255,255,255,.06);stroke:#fff;stroke-width:.8;vector-effect:non-scaling-stroke;}
     .aquarium-credit::after {content:"";position:absolute;left:-2px;top:-2px;width:3px;height:3px;background:#fff;}
+    
+    .aquarium-credit-names {padding:6px 9px;gap:5px 12px;font-size:clamp(9px,2.7cqw,12px);}
+    .credit-cherry {left:10%;top:7%;width:45%;height:10%;}
+    .credit-cherry .aquarium-credit-names {gap:4px 10px;}
+    .credit-kit {left:46%;top:30%;width:23%;height:6%;}
+    .credit-drake {left:19%;top:50%;width:33%;height:6%;}
+    .credit-nine {left:75%;top:64%;width:21%;height:6%;}
+    .credit-yyg {left:29%;top:78%;width:28%;height:6%;}
+    .credit-kai {left:58%;top:90%;width:34%;height:6%;}
+    .aquarium-credit-names span {white-space:nowrap;}
     </style>
 </head>
 <body>
@@ -827,6 +837,10 @@
       <a class="banner-link" href="./" aria-label="MELTING POINT">
         <img src="./melting-point-banner.png" alt="MELTING POINT 배너" width="2000" height="400">
         <span class="banner-tooltip" role="tooltip">MELTING POINT</span>
+      </a>
+      <a class="banner-link" href="https://brutaltanuki.github.io/meltingpoint/" aria-label="MELTING POINT GitHub 홈페이지" target="_blank" rel="noopener noreferrer">
+        <img src="./github-banner.png" alt="MELTING POINT GitHub 홈페이지 배너" width="2000" height="400">
+        <span class="banner-tooltip" role="tooltip">MELTING POINT · GitHub</span>
       </a>
     </section>
     <section class="aquarium" aria-label="해파리 키우기">
@@ -1529,14 +1543,15 @@
           connections.setAttribute("viewBox", "0 0 100 100");
           connections.setAttribute("preserveAspectRatio", "none");
           connections.setAttribute("aria-hidden", "true");
-          connections.innerHTML = '<path class="frame-network" d="M59 13 H83 V24 H60 V28 M46 38 H35 V43 H36.5 V48 M54 53 H68 V58 H86 V62 M75 67 H66 V81 H58"/><path class="fish-leaders" d="M59 17 H65 V14 H70 M46 33 H41 V32 H37 M54 50 H62 V44 H66 M75 68 H72 V65 H66 M43 76 V72 H30 V68"/><g class="fish-markers"><rect x="70" y="12.7" width="3.5" height="2.6"/><rect x="33.5" y="30.7" width="3.5" height="2.6"/><rect x="66" y="41.4" width="3.5" height="2.6"/><rect x="62.5" y="63.7" width="3.5" height="2.6"/><rect x="26.5" y="65.4" width="3.5" height="2.6"/></g>';
+          connections.innerHTML = '<path class="frame-network" d="M59 13 H83 V24 H60 V28 M46 38 H35 V43 H36.5 V48 M54 53 H68 V58 H86 V62 M75 67 H66 V81 H58"/><path class="fish-leaders" d="M59 17 H65 V14 H70 M46 33 H41 V32 H37 M54 50 H62 V44 H66 M75 68 H72 V65 H66 M43 76 V72 H30 V68 M43 86 V90 H68 M68 90 V85 H78 V72"/><g class="fish-markers"><rect x="70" y="12.7" width="3.5" height="2.6"/><rect x="33.5" y="30.7" width="3.5" height="2.6"/><rect x="66" y="41.4" width="3.5" height="2.6"/><rect x="62.5" y="63.7" width="3.5" height="2.6"/><rect x="26.5" y="65.4" width="3.5" height="2.6"/></g>';
           aquarium.append(connections);
           const credits = [
             {account:"@cherrymango", names:["overload", "justice", "vibe", "Syndrome"], position:"cherry"},
             {account:"@kit", names:["표유리"], position:"kit"},
             {account:"@drake_4bko5xtfte", names:["바이스", "오닉스"], position:"drake"},
             {account:"@208x195", names:["구일오"], position:"nine"},
-            {account:"@YYG", names:["실비오", "나초"], position:"yyg"}
+            {account:"@YYG", names:["실비오", "나초"], position:"yyg"},
+            {account:"+", names:["카이", "앤더슨"], position:"kai"}
           ];
           credits.forEach(credit => {
             const frame = document.createElement("section");
@@ -1668,8 +1683,8 @@
       try {
         await loadMusicAPI();
         bgmPlayer = new YT.Player("bgm-youtube", {
-          width: "200", height: "113", videoId: "t1cC3pdFODA",
-          playerVars: { playsinline: 1, rel: 0, loop: 1, playlist: "t1cC3pdFODA" },
+          width: "200", height: "113", videoId: "FO8uIelNYQM",
+          playerVars: { playsinline: 1, rel: 0, loop: 1, playlist: "FO8uIelNYQM" },
           events: {
             onReady: () => {
               bgmReady = true;
