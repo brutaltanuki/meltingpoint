@@ -714,7 +714,30 @@
     .relationship-chapters p {font-size:12px;line-height:1.95;margin:0;color:#555;word-break:keep-all;}
     .relationship-quote {margin:30px 0;padding:24px 0;border-top:1px solid #ddd;border-bottom:1px solid #ddd;text-align:center;font-size:14px;line-height:2;color:#777;font-style:italic;}
     @media(max-width:600px){.relationship-page{padding:18px 0 0}.relationship-portraits{grid-template-columns:1fr 20px 1fr}.relationship-portraits img{height:190px}.relationship-chapters{grid-template-columns:1fr;gap:24px}.relationship-quote{font-size:12px}}
-  </style>
+  
+    .character-detail.vein-detail.has-profile {grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:26px;}
+    .character-detail.vein-detail.has-profile > img {width:100%;height:540px;max-height:65dvh;object-fit:cover;object-position:center 12%;}
+    .relationship-page {max-width:960px;padding:24px 0 4px;}
+    .relationship-page > .relationship-kicker {text-align:center;font-size:9px;letter-spacing:.25em;}
+    .relationship-page > h3 {font-family:Georgia,serif;text-align:center;font-size:clamp(30px,5vw,52px);letter-spacing:-.06em;margin:10px 0 0;}
+    .relationship-page > .relationship-intro {max-width:500px;margin:12px auto 0;text-align:center;font-size:10px;line-height:1.7;color:#999;}
+    .pair-artwork {position:relative;width:100%;aspect-ratio:1.5;margin:12px auto 20px;isolation:isolate;}
+    .fish-portrait {position:absolute;top:0;width:50%;height:100%;mask-image:url('./pair/pair-fish-mask.webp');mask-repeat:no-repeat;mask-size:200% 100%;-webkit-mask-image:url('./pair/pair-fish-mask.webp');-webkit-mask-repeat:no-repeat;-webkit-mask-size:200% 100%;overflow:hidden;}
+    .fish-vein {left:0;mask-position:left top;-webkit-mask-position:left top;background:#12244b;}
+    .fish-melt {right:0;mask-position:right top;-webkit-mask-position:right top;background:#db9eb8;}
+    .fish-portrait img {width:100%;height:100%;object-fit:cover;}
+    .fish-vein img {object-position:54% 20%;filter:contrast(1.2) saturate(.65);mix-blend-mode:screen;}
+    .fish-melt img {object-position:40% 10%;filter:contrast(1.15) saturate(.75);mix-blend-mode:multiply;}
+    .pair-art-center {position:absolute;left:37%;top:36%;width:26%;text-align:center;color:#17253f;}
+    .pair-art-center > span {display:block;font:italic clamp(7px,1.1vw,12px) Georgia,serif;}
+    .pair-art-center strong {display:block;font:italic clamp(16px,3vw,35px)/.9 Georgia,serif;letter-spacing:-.07em;margin:8px 0 16px;}
+    .pair-art-center small {font-size:7px;line-height:1.8;letter-spacing:.14em;}
+    .pair-art-caption {position:absolute;bottom:-8px;left:8%;right:8%;display:flex;justify-content:space-between;align-items:center;font-size:9px;gap:10px;}
+    .pair-art-caption > span {font:italic 11px Georgia,serif;color:#999;}
+    .pair-story {margin:35px 30px 15px;}
+    .pair-story summary {cursor:pointer;list-style:none;text-align:center;font-size:10px;letter-spacing:.15em;color:#888;padding:15px;border-top:1px solid #eee;}
+    @media(max-width:600px){.character-detail.vein-detail.has-profile{grid-template-columns:1fr}.character-detail.vein-detail.has-profile > img{height:380px;max-height:none;object-fit:contain}.pair-artwork{margin-top:28px}.pair-art-caption{left:0;right:0;font-size:7px}.pair-art-caption > span{font-size:8px}.pair-art-center small{font-size:5px}.pair-story{margin:30px 0 10px}}
+</style>
 </head>
 <body>
   <main class="page" aria-label="귀상어와 초점 프레임">
@@ -1121,6 +1144,7 @@
       };
       const detail = document.createElement("article");
       detail.className = "character-detail";
+      if (specimen.id === "hammerhead") detail.classList.add("vein-detail");
       const picture = document.createElement("img");
       picture.src = "./pair/" + (specimen.portrait || specimen.file);
       picture.alt = specimen.name;
@@ -1219,11 +1243,13 @@
         <p class="relationship-kicker">PAIR ARCHIVE · CHAPTER 02</p>
         <h3>VEIN &amp; MELT</h3>
         <p class="relationship-intro">서도혁과 강하리. 같은 OLYMPIAN 팀의 센티넬, 그리고 서로를 짝꿍이라고 부르는 두 사람.<br>수족관에서 시작된 바다 이야기와, 다음에도 함께 가고 싶은 곳들.</p>
-        <div class="relationship-portraits">
-          <figure><img src="./pair/vein-detail-20261115.webp" alt="VEIN 서도혁"><figcaption><button class="relation-person" data-person="hammerhead">VEIN · 서도혁 ↗</button></figcaption></figure>
-          <span class="relation-thread" aria-hidden="true">—</span>
-          <figure><img src="./pair/melt-relation-20261115.webp" alt="MELT 강하리"><figcaption><button class="relation-person" data-person="jellyfish">MELT · 강하리 ↗</button></figcaption></figure>
+        <div class="pair-artwork" role="img" aria-label="물고기 골격 실루엣 안에 담긴 VEIN과 MELT의 초상">
+          <div class="fish-portrait fish-vein"><img src="./pair/portrait-hammerhead.png" alt=""></div>
+          <div class="fish-portrait fish-melt"><img src="./pair/melt-relation-20261115.webp" alt=""></div>
+          <div class="pair-art-center"><span>two different tides</span><strong>one<br>melting point</strong><small>VEIN × MELT<br>OLYMPIAN · THEMIS</small></div>
+          <div class="pair-art-caption"><button class="relation-person" data-person="hammerhead">VEIN / 서도혁 ↗</button><span>the sea between us</span><button class="relation-person" data-person="jellyfish">MELT / 강하리 ↗</button></div>
         </div>
+        <details class="pair-story"><summary>두 사람의 기록 ＋</summary>
         <div class="relationship-chapters">
           <section><h4>01 / 처음 보여준 바다</h4><p>베인은 멜트에게 처음으로 수족관을 보여준 사람이다. 멜트가 베인을 소개하며 가장 먼저 꺼내는 기억도 그곳이다. 망치상어와 해파리, 유리 너머의 물결은 두 사람의 이야기를 이어주는 풍경으로 남아 있다.</p></section>
           <section><h4>02 / 서로 다른 빈자리</h4><p>베인은 바다에서 부모님을 잃었고, 시설에서 자란 멜트는 부모님과 함께한 기억이 없다. 서로의 과거가 같지는 않다. 멜트는 베인에게 할머니가 있다는 사실을 부러워하면서도, 다음에는 함께 할머니 댁에 가겠다는 약속을 이야기한다.</p></section>
@@ -1231,7 +1257,7 @@
           <section><h4>04 / 손을 잡고 가는 다음</h4><p>베인은 멜트에게 지하철 타는 법을 알려준다. 멜트는 손을 잡고 함께 할머니 댁에 갈 수 있다고 생각한다. 낯선 길을 배우는 일과 다음에 만날 사람을 떠올리는 일. 두 사람의 관계는 그런 작고 구체적인 일상 속에서도 이어진다.</p></section>
         </div>
         <blockquote class="relationship-quote">“...아, 그래서 멜트는 다음 생에 해파리로 태어나면 안된대.<br>베인 손 잡아줘야 되거든.”</blockquote>
-        <p class="relationship-intro">손을 잡을 수 있는 모습으로, 다음에도 짝꿍의 곁에.<br>멜트가 말하는 두 사람의 미래는 그 짧은 문장에 담겨 있다.</p>`;
+        <p class="relationship-intro">손을 잡을 수 있는 모습으로, 다음에도 짝꿍의 곁에.<br>멜트가 말하는 두 사람의 미래는 그 짧은 문장에 담겨 있다.</p></details>`;
       page.querySelectorAll('[data-person]').forEach(button => {
         button.onclick = () => {
           openCharacter(characterSpecimens.find(s => s.id === button.dataset.person), true);
