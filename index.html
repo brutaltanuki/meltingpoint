@@ -1770,7 +1770,8 @@
       {id:'melt',name:'멜트',credit:'@ssui6r',lines:['아야! 멜트 머리 만지지 마!','멜트는 공주님이니까 마음대로 해도 돼, 베인은 안 돼.','또 같이 놀자!'],start:.42,speed:-20},
       {id:'rode',name:'로데',lines:['...','말랑말랑','(천천히 유영한다...)'],start:.70,speed:10}
     ];
-    let active, timer, last = 0;
+    let active, timer, last = 0, lastCollision = -Infinity;
+    const collisionBubbles = [];
     const pets = data.map(info => {
       const pet = document.createElement('div'); pet.className = 'floor-pet pet-' + info.id;
       const button = document.createElement('button'); button.type='button';button.setAttribute('aria-label',info.name+'에게 말 걸기');
@@ -1778,11 +1779,11 @@
       const name=document.createElement('span');name.className='pet-name';name.textContent=info.name;button.append(image,name);pet.append(button);
       if(info.credit){const credit=document.createElement('span');credit.className='pet-credit';credit.textContent=info.credit;pet.append(credit);}
       layer.append(pet);
-      const state={pet,button,x:info.start*Math.max(0,innerWidth-94),speed:info.speed,pause:false,line:0};
+      const state={pet,button,x:info.start*Math.max(0,innerWidth-94),speed:info.speed,pause:false,line:0,kick:0,bumpUntil:0};
       button.addEventListener('pointerenter',()=>state.pause=true);button.addEventListener('pointerleave',()=>state.pause=false);
       button.addEventListener('focus',()=>state.pause=true);button.addEventListener('blur',()=>state.pause=false);
       button.addEventListener('click',()=>{
-        clearTimeout(timer);if(active)active.pet.classList.remove('talking');active=state;
+        collisionBubbles.filter(item=>item.state===state).forEach(item=>{item.bubble.remove();collisionBubbles.splice(collisionBubbles.indexOf(item),1)});clearTimeout(timer);if(active)active.pet.classList.remove('talking');active=state;
         pet.classList.remove('pressed');void pet.offsetWidth;pet.classList.add('pressed','talking');
         speech.textContent=info.lines[state.line++ % info.lines.length];speech.classList.add('visible');positionSpeech();
         timer=setTimeout(()=>{speech.classList.remove('visible');pet.classList.remove('talking');active=null;},4500);
@@ -1790,8 +1791,58 @@
       return state;
     });
     function positionSpeech(){if(!active)return;const r=active.pet.getBoundingClientRect();const w=speech.offsetWidth;const left=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2));speech.style.left=left+'px';speech.style.top=Math.max(12,r.top-speech.offsetHeight-12)+'px';speech.style.setProperty('--tail',Math.max(8,Math.min(w-16,r.left+r.width/2-left))+'px');}
+    function placeBubble(bubble, state, extra = 0) {
+      const rect = state.pet.getBoundingClientRect();
+      const width = bubble.offsetWidth;
+      const left = Math.max(12, Math.min(innerWidth - width - 12, rect.left + rect.width / 2 - width / 2));
+      bubble.style.left = left + 'px';
+      bubble.style.top = Math.max(12, rect.top - bubble.offsetHeight - 12 - extra) + 'px';
+      bubble.style.setProperty('--tail', Math.max(8, Math.min(width - 16, rect.left + rect.width / 2 - left)) + 'px');
+    }
+    function bump(time, left, right) {
+      clearTimeout(timer); speech.classList.remove('visible');
+      if (active) active.pet.classList.remove('talking'); active = null;
+      collisionBubbles.splice(0).forEach(item => item.bubble.remove());
+      left.speed = -Math.abs(left.speed); right.speed = Math.abs(right.speed);
+      left.kick = -95; right.kick = 95;
+      for (const state of [left, right]) {
+        state.bumpUntil = time + 1100;
+        state.pet.classList.remove('pressed'); void state.pet.offsetWidth; state.pet.classList.add('pressed','talking');
+        const bubble = document.createElement('div'); bubble.className = 'pet-speech visible collision-speech';
+        bubble.setAttribute('role','status');
+        bubble.textContent = state === pets[0] ? '야, 앞에 똑바로 안봐?' : '아야!';
+        document.body.append(bubble); collisionBubbles.push({bubble, state, until:time+2600});
+      }
+      lastCollision = time;
+    }
     function step(time){const dt=Math.min((time-last)/1000,.05);last=time;
-      for(const s of pets){const max=Math.max(0,innerWidth-s.pet.offsetWidth);if(!s.pause&&active!==s&&!reduced.matches){s.x+=s.speed*dt;if(s.x<0){s.x=0;s.speed=Math.abs(s.speed)}if(s.x>max){s.x=max;s.speed=-Math.abs(s.speed)}}s.x=Math.max(0,Math.min(max,s.x));s.pet.style.transform='translateX('+s.x+'px)';}positionSpeech();requestAnimationFrame(step);}
+      for (const state of pets) {
+        const max = Math.max(0, innerWidth - state.pet.offsetWidth);
+        if (time < state.bumpUntil && !reduced.matches) {
+          state.x += state.kick * dt; state.kick *= Math.exp(-4 * dt);
+        } else if (!state.pause && active !== state && !reduced.matches) {
+          state.x += state.speed * dt;
+        }
+        if (state.x < 0) { state.x = 0; state.speed = Math.abs(state.speed); state.kick = 0; }
+        if (state.x > max) { state.x = max; state.speed = -Math.abs(state.speed); state.kick = 0; }
+      }
+      const [left, right] = pets[0].x <= pets[1].x ? [pets[0],pets[1]] : [pets[1],pets[0]];
+      const gap = 6, separation = left.pet.offsetWidth + gap;
+      if (right.x - left.x < separation && innerWidth >= left.pet.offsetWidth + right.pet.offsetWidth + gap) {
+        const midpoint = (left.x + left.pet.offsetWidth + right.x) / 2;
+        left.x = Math.max(0, Math.min(innerWidth - right.pet.offsetWidth - separation, midpoint - left.pet.offsetWidth - gap / 2));
+        right.x = left.x + separation;
+        if (time - lastCollision > 1400) bump(time, left, right);
+        else { left.speed = -Math.abs(left.speed); right.speed = Math.abs(right.speed); }
+      }
+      for (const state of pets) state.pet.style.transform = 'translateX(' + state.x + 'px)';
+      for (let i = collisionBubbles.length - 1; i >= 0; i--) {
+        const item = collisionBubbles[i];
+        if (time > item.until) { item.bubble.remove(); item.state.pet.classList.remove('talking'); collisionBubbles.splice(i,1); }
+        else placeBubble(item.bubble, item.state, item.state === pets[0] ? 42 : 0);
+      }
+      positionSpeech(); requestAnimationFrame(step);
+    }
     requestAnimationFrame(step);
   })();
   </script>
