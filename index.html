@@ -737,7 +737,14 @@
     .pair-story {margin:35px 30px 15px;}
     .pair-story summary {cursor:pointer;list-style:none;text-align:center;font-size:10px;letter-spacing:.15em;color:#888;padding:15px;border-top:1px solid #eee;}
     @media(max-width:600px){.character-detail.vein-detail.has-profile{grid-template-columns:1fr}.character-detail.vein-detail.has-profile > img{height:380px;max-height:none;object-fit:contain}.pair-artwork{margin-top:28px}.pair-art-caption{left:0;right:0;font-size:7px}.pair-art-caption > span{font-size:8px}.pair-art-center small{font-size:5px}.pair-story{margin:30px 0 10px}}
-</style>
+
+    .site-popup.list-popup {width:min(460px,calc(100vw - 32px));max-height:90dvh;padding:0;border:0;background:#000;overflow:hidden;}
+    .list-popup .popup-bar {display:contents;}
+    .list-popup .popup-bar h2 {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
+    .list-popup .popup-close {position:absolute;top:10px;right:12px;z-index:2;color:#fff;width:36px;height:36px;text-shadow:0 1px 5px #000;font-size:30px;}
+    .list-popup .popup-body {padding:0;}
+    .list-popup .popup-body > img {display:block;width:100%;height: min(80dvh,760px);object-fit:cover;}
+    </style>
 </head>
 <body>
   <main class="page" aria-label="귀상어와 초점 프레임">
@@ -1252,7 +1259,7 @@
         <details class="pair-story"><summary>두 사람의 기록 ＋</summary>
         <div class="relationship-chapters">
           <section><h4>아쿠아리움</h4><p>멜트의 수족관은 시설에 있던 낡은 해양생물도감의 구겨진 페이지였다. 베인은 그녀의 손을 잡고 커다란 수조 앞에 섰다. 은색으로 빛나는 물고기 떼가 두 사람의 머리 위를 지나간다, 유년기의 상처는 수류 장치가 만들어낸 파도와 함께 멀어진다.</p></section>
-          <section><h4>02 / 서로 다른 빈자리</h4><p>포세이돈의 힘을 가진 사내는 바다에게 부모를 빼았겼다. 보호를 관장하는 여신의 힘을 가진 여자는 자라며 누구에게도 보호받아본 적이 없다. 그렇기에 두 사람은 서로의 손을 세게 맞잡는다. 부러움, 원망, 애정이 뒤섞인 파도가 밀려온다.</p></section>
+          <section><h4>서로 다른 빈자리</h4><p>포세이돈의 힘을 가진 사내는 바다에게 부모를 빼았겼다. 보호를 관장하는 여신의 힘을 가진 여자는 자라며 누구에게도 보호받아본 적이 없다. 그렇기에 두 사람은 서로의 손을 세게 맞잡는다. 부러움, 원망, 애정이 뒤섞인 파도가 밀려온다.</p></section>
           <section><h4>까칠이, 삐죽이, 툴툴이</h4><p>베인의 손가락 중 가장 바쁜 녀석은 단연코 가운데에 있는 가장 긴 녀석이다. 표정은 늘 구겨져 있고, 말투는 사납다. 하지만 그의 손은 늘 넘어질뻔한 멜트의 허리에 가장 빠르게 닿아있다. 멜트는 그것을 누구보다 잘 알고 있다.</p></section>
           <section><h4>이번 역은</h4><p>지하철 개찰구 앞, 차갑게 생긴 기계 앞에 선 멜트의 손에는 테미스에서 발급된 카드가 쥐어져 있다. 베인은 다섯 걸음 뒤, 멜트가 그것을 대고, 기계를 밀고 안쪽으로 향한다. 베인은 선생님이지? 멜트는 그의 지시에 따라 호출벨을 눌러 다시 나오는 것 까지 성공한다. 다음 행선지는 그의 할머니가 사는 집이다.</p></section>
         </div>
@@ -1477,6 +1484,7 @@
     document.querySelectorAll("[data-popup]").forEach(button => {
       button.addEventListener("click", () => {
         const kind = button.dataset.popup;
+        popup.classList.toggle("list-popup", kind === "list");
         popup.classList.toggle("info-popup", kind === "info");
         popup.classList.toggle("pair-popup", kind === "pair");
         popup.classList.toggle("gacha-popup", kind === "gacha");
@@ -1488,6 +1496,13 @@
         else if (kind === "gacha") showGacha();
         else if (kind === "pair") showPair();
         else if (kind === "backup") showBackup();
+        else if (kind === "list") {
+          popupTitle.textContent = "수족관";
+          const image = document.createElement("img");
+          image.src = "./list-aquarium.webp";
+          image.alt = "어두운 수조를 헤엄치는 푸른 물고기들";
+          popupBody.replaceChildren(image);
+        }
         else {
           popupTitle.textContent = popupContent[kind].title;
           popupBody.replaceChildren(paragraph(popupContent[kind].body ||
