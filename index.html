@@ -827,7 +827,14 @@
     .entry-gate.entering .entry-title {opacity:0;transform:translateY(-14px);pointer-events:none;}
     .entry-gate.finished {opacity:0;pointer-events:none;}
     @media(prefers-reduced-motion:reduce){.entry-gate,.entry-title{transition-duration:.15s}}
-</style>
+
+    .entry-gate canvas {image-rendering:auto;}
+    .entry-title {transition:opacity .35s,transform .6s,letter-spacing .6s,text-shadow .6s;}
+    .entry-title:hover,.entry-title:focus-visible {letter-spacing:.075em;text-shadow:0 0 8px #ffffff90,0 0 30px #ffffff40;animation:entry-drift 2.8s ease-in-out infinite;}
+    .entry-gate.entering .entry-title {animation:none;}
+    @keyframes entry-drift {0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-.4deg)}}
+    @media(prefers-reduced-motion:reduce){.entry-title:hover,.entry-title:focus-visible{animation:none}}
+    </style>
 </head>
 <body class="intro-active">
   <section class="entry-gate" aria-label="MELTING POINT 입장">
@@ -1903,33 +1910,49 @@
     const page = document.querySelector('main'); if(page) page.inert = true;
     const pets = document.querySelector('.floor-pets'); if(pets) pets.inert = true;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let width, height, particles = [], previous = 0, spawn = 0, start = null, done = false, frame;
-    const pixel = 5;
-    function resize(){width=Math.ceil(innerWidth/pixel);height=Math.ceil(innerHeight/pixel);canvas.width=width;canvas.height=height;ctx.imageSmoothingEnabled=false;}
+    let width, height, particles = [], previous = 0, spawn = 0, start = null, done = false;
+    let cells = [];
+    const cellX = 9, cellY = 13;
+    function resize(){
+      width=innerWidth;height=innerHeight;const dpr=Math.min(devicePixelRatio||1,2);
+      canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.font='12px "Courier New",monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+      cells=[];for(let y=cellY/2;y<height;y+=cellY)for(let x=cellX/2;x<width;x+=cellX)cells.push({x,y,noise:Math.random(),glyph:['.','o','O',':','*','(',')'][Math.floor(Math.random()*7)]});
+    }
     resize(); addEventListener('resize',resize);
-    function bubble(fromBottom=true){return {x:Math.random()*width,y:fromBottom?height+8:Math.random()*height,size:2+Math.floor(Math.random()*4),speed:8+Math.random()*15,phase:Math.random()*7};}
-    for(let i=0;i<Math.min(36,width/5);i++)particles.push(bubble(false));
-    function draw(time){
-      if(done)return; const dt=Math.min((time-previous)/1000,.05);previous=time;
-      const progress=start===null?0:Math.min(1,(time-start)/(reduced?250:1900));
-      ctx.clearRect(0,0,width,height);ctx.fillStyle='#fff';spawn+=dt*(start===null?5:160);
-      while(spawn>=1){particles.push(bubble());spawn--;}
-      const surface=height*(1-progress*1.22);
-      for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.y-=p.speed*dt*(start===null?1:3);const x=Math.round(p.x+Math.sin(time/1200+p.phase)*2),y=Math.round(p.y),z=p.size;
-        ctx.fillRect(x+1,y,z-2,1);ctx.fillRect(x,y+1,1,z-2);ctx.fillRect(x+z-1,y+1,1,z-2);ctx.fillRect(x+1,y+z-1,z-2,1);
-        if(start!==null&&progress>.25)ctx.fillRect(x+1,y+1,z-2,z-2);
-        if(p.y < -10)particles.splice(i,1);
+    function bubble(fromBottom=true){return {x:Math.random()*width,y:fromBottom?height+45:Math.random()*height,r:9+Math.random()*19,speed:18+Math.random()*22,phase:Math.random()*7};}
+    for(let i=0;i<Math.min(34,width/30);i++)particles.push(bubble(false));
+    function drawBubble(p,time,progress){
+      const radius=p.r*(1+progress*1.4),cx=p.x+Math.sin(time/1500+p.phase)*10;
+      const top=Math.floor((p.y-radius)/cellY)*cellY;
+      for(let y=top;y<=p.y+radius;y+=cellY)for(let x=Math.floor((cx-radius)/cellX)*cellX;x<=cx+radius;x+=cellX){
+        const dx=(x-cx)/radius,dy=(y-p.y)/radius,dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist>.7&&dist<1.15){const glyph=dy<-.55?'.':dy>.55?'o':dx<-.45?'(':dx>.45?')':':';ctx.fillText(glyph,x,y);}
+        else if(progress>.45&&dist<.7&&Math.sin(x*.2+y*.4+p.phase)>.45)ctx.fillText('.',x,y);
       }
+    }
+    function draw(time){
+      if(done)return;const dt=Math.min((time-previous)/1000,.05);previous=time;
+      const progress=start===null?0:Math.min(1,(time-start)/(reduced?350:2800));
+      ctx.clearRect(0,0,width,height);ctx.fillStyle='rgba(255,255,255,.8)';
+      spawn+=dt*(start===null?3:12+progress*75);
+      while(spawn>=1){particles.push(bubble());spawn--;}
+      for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.y-=p.speed*dt*(1+progress*2.2);drawBubble(p,time,progress);if(p.y < -100)particles.splice(i,1);}
       if(start!==null){
-        ctx.fillRect(0,Math.max(0,Math.ceil(surface)),width,height);
-        for(let x=0;x<width;x+=4){const crest=Math.sin(x*.18+time*.009)*3+Math.sin(x*.5-time*.007)*2;ctx.fillRect(x,Math.round(surface+crest),4,9);}
+        // A foamy field of printed characters rises unevenly, never a solid pixel wipe.
+        const rise=(progress*1.45-.15)*height;
+        for(const c of cells){const wave=Math.sin(c.x*.009+time*.0018)*35+Math.cos(c.x*.022-time*.001)*20;
+          const local=(rise-(height-c.y)+wave)/130;
+          if(local>c.noise){ctx.globalAlpha=Math.min(.95,Math.max(0,local-c.noise)*1.8);ctx.fillText(c.glyph,c.x,c.y);}
+        }
+        ctx.globalAlpha=1;
         if(progress===1){done=true;document.body.classList.remove('intro-active');if(page)page.inert=false;if(pets)pets.inert=false;gate.classList.add('finished');
           setTimeout(()=>{gate.remove();removeEventListener('resize',resize);const target=document.querySelector('[data-popup]');if(target)target.focus({preventScroll:true});},reduced?160:460);return;}
       }
-      frame=requestAnimationFrame(draw);
+      requestAnimationFrame(draw);
     }
     button.addEventListener('click',()=>{if(start!==null)return;start=performance.now();button.disabled=true;gate.classList.add('entering');});
-    button.focus({preventScroll:true});frame=requestAnimationFrame(draw);
+    button.focus({preventScroll:true}); requestAnimationFrame(draw);
   })();
   </script>
 </body>
