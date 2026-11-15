@@ -817,9 +817,23 @@
     .banner-info-popup .copy-status {min-height:0;margin:0;font-size:10px;}
     .banner-info-popup .copy-status:not(:empty) {margin-top:6px;padding-right:30px;}
     .banner-info-popup .banner-copy-row:last-of-type {margin-bottom:0;}
-    </style>
+    
+    body.intro-active {background:#000;}
+    body.intro-active > .page,body.intro-active > .floor-pets,body.intro-active > .pet-speech {visibility:hidden;}
+    .entry-gate {position:fixed;inset:0;z-index:1000;background:#000;display:grid;place-items:center;overflow:hidden;opacity:1;transition:opacity .45s ease;}
+    .entry-gate canvas {position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;pointer-events:none;}
+    .entry-title {position:relative;z-index:1;border:0;background:none;color:white;font:400 clamp(28px,6vw,76px)/1.2 "Redaction 70",Georgia,serif;letter-spacing:.035em;padding:24px 18px;transition:opacity .35s,transform .6s;}
+    .entry-title:focus-visible {outline:1px solid white;outline-offset:10px;}
+    .entry-gate.entering .entry-title {opacity:0;transform:translateY(-14px);pointer-events:none;}
+    .entry-gate.finished {opacity:0;pointer-events:none;}
+    @media(prefers-reduced-motion:reduce){.entry-gate,.entry-title{transition-duration:.15s}}
+</style>
 </head>
-<body>
+<body class="intro-active">
+  <section class="entry-gate" aria-label="MELTING POINT 입장">
+    <canvas aria-hidden="true"></canvas>
+    <button class="entry-title" type="button" aria-label="MELTING POINT 입장하기">MELTING POINT</button>
+  </section>
   <main class="page" aria-label="귀상어와 초점 프레임">
     <img class="shark" src="./shark.jpg" width="736" height="1432" alt="문자 기호로 그린 귀상어">
     <svg class="links" aria-hidden="true">
@@ -1614,7 +1628,7 @@
             {account:"@drake_4bko5xtfte", names:["바이스", "오닉스"], position:"drake"},
             {account:"@208x195", names:["구일오"], position:"nine"},
             {account:"@YYG", names:["실비오", "나초"], position:"yyg"},
-            {account:"+", names:["카이", "앤더슨"], position:"kai"}
+            {account:"e4e5", names:["카이"], position:"kai"}
           ];
           credits.forEach(credit => {
             const frame = document.createElement("section");
@@ -1880,6 +1894,42 @@
       positionSpeech(); requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
+  })();
+  </script>
+
+  <script>
+  (() => {
+    const gate = document.querySelector('.entry-gate'), button = gate.querySelector('button'), canvas = gate.querySelector('canvas'), ctx = canvas.getContext('2d');
+    const page = document.querySelector('main'); if(page) page.inert = true;
+    const pets = document.querySelector('.floor-pets'); if(pets) pets.inert = true;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let width, height, particles = [], previous = 0, spawn = 0, start = null, done = false, frame;
+    const pixel = 5;
+    function resize(){width=Math.ceil(innerWidth/pixel);height=Math.ceil(innerHeight/pixel);canvas.width=width;canvas.height=height;ctx.imageSmoothingEnabled=false;}
+    resize(); addEventListener('resize',resize);
+    function bubble(fromBottom=true){return {x:Math.random()*width,y:fromBottom?height+8:Math.random()*height,size:2+Math.floor(Math.random()*4),speed:8+Math.random()*15,phase:Math.random()*7};}
+    for(let i=0;i<Math.min(36,width/5);i++)particles.push(bubble(false));
+    function draw(time){
+      if(done)return; const dt=Math.min((time-previous)/1000,.05);previous=time;
+      const progress=start===null?0:Math.min(1,(time-start)/(reduced?250:1900));
+      ctx.clearRect(0,0,width,height);ctx.fillStyle='#fff';spawn+=dt*(start===null?5:160);
+      while(spawn>=1){particles.push(bubble());spawn--;}
+      const surface=height*(1-progress*1.22);
+      for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.y-=p.speed*dt*(start===null?1:3);const x=Math.round(p.x+Math.sin(time/1200+p.phase)*2),y=Math.round(p.y),z=p.size;
+        ctx.fillRect(x+1,y,z-2,1);ctx.fillRect(x,y+1,1,z-2);ctx.fillRect(x+z-1,y+1,1,z-2);ctx.fillRect(x+1,y+z-1,z-2,1);
+        if(start!==null&&progress>.25)ctx.fillRect(x+1,y+1,z-2,z-2);
+        if(p.y < -10)particles.splice(i,1);
+      }
+      if(start!==null){
+        ctx.fillRect(0,Math.max(0,Math.ceil(surface)),width,height);
+        for(let x=0;x<width;x+=4){const crest=Math.sin(x*.18+time*.009)*3+Math.sin(x*.5-time*.007)*2;ctx.fillRect(x,Math.round(surface+crest),4,9);}
+        if(progress===1){done=true;document.body.classList.remove('intro-active');if(page)page.inert=false;if(pets)pets.inert=false;gate.classList.add('finished');
+          setTimeout(()=>{gate.remove();removeEventListener('resize',resize);const target=document.querySelector('[data-popup]');if(target)target.focus({preventScroll:true});},reduced?160:460);return;}
+      }
+      frame=requestAnimationFrame(draw);
+    }
+    button.addEventListener('click',()=>{if(start!==null)return;start=performance.now();button.disabled=true;gate.classList.add('entering');});
+    button.focus({preventScroll:true});frame=requestAnimationFrame(draw);
   })();
   </script>
 </body>
