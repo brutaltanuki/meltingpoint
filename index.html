@@ -835,7 +835,26 @@
     @keyframes entry-drift {0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-.4deg)}}
     @media(prefers-reduced-motion:reduce){.entry-title:hover,.entry-title:focus-visible{animation:none}}
     @media(max-width:600px){.page {--shark-left:-24cqw;--shark-width:91cqw;}.page .shark{left:var(--shark-left);width:var(--shark-width);}}
-</style>
+
+    .mobile-banner-button {display:none;}
+    .banner-collection-popup {background:#fff;width:min(500px,calc(100vw - 28px));}
+    .banner-collection {display:flex;flex-direction:column;gap:16px;max-height:65dvh;overflow-y:auto;scrollbar-color:#1c43ff #eef1ff;}
+    @media(max-width:600px){
+      .page .plush-frame {top:13cqh;left:3cqw;width:15cqw;}
+      .page .skull-panel {left:auto;right:8cqw;top:13cqh;width:40cqw;}
+      .page .skull-panel > .quote {left:auto;right:0;width:52cqw;bottom:calc(100% + 20px);font-size:10px;}
+      .page .portrait-back {left:17cqw;top:42cqh;width:22cqw;}
+      .page .portrait-front {left:10cqw;top:49cqh;width:22cqw;}
+      .page .tail-quote {left:5cqw;bottom:auto;top:66cqh;width:34cqw;font-size:10px;line-height:1.6;margin-left:0;}
+      .right-scene .aquarium-heading {top:26cqh;right:12px;width:52cqw;text-align:right;}
+      .right-scene .aquarium-title {font-size:clamp(22px,5.5cqw,29px);}
+      .right-scene .aquarium-subtitle {font-size:9px;}
+      .right-scene .aquarium-prologue {font-size:10px;line-height:1.65;text-align:right;}
+      .right-scene .page-music {top:43cqh;}
+      .right-scene .banner-exchange {display:none;}
+      .mobile-banner-button {display:block;position:absolute;right:12px;top:55cqh;border:1px solid #68646a;background:#fff;padding:8px 18px;color:#333;font:11px "Mona12",sans-serif;}
+    }
+    </style>
 </head>
 <body class="intro-active">
   <section class="entry-gate" aria-label="MELTING POINT 입장">
@@ -898,6 +917,7 @@
       <div class="bgm-engine" hidden><div id="bgm-youtube"></div></div>
       <output class="bgm-status" aria-live="polite"></output>
     </aside>
+    <button class="mobile-banner-button" type="button" data-popup="banners">banner</button>
     <section class="banner-exchange" aria-label="교환 배너 모음" tabindex="0">
       <a class="banner-link" href="#banner-info" data-popup="banner" aria-label="MELTING POINT 배너 정보">
         <img src="./melting-point-banner.png" alt="MELTING POINT 배너" width="2000" height="400">
@@ -1589,6 +1609,7 @@
         const kind = button.dataset.popup;
         if (kind === "banner") event.preventDefault();
         popup.classList.toggle("banner-info-popup", kind === "banner");
+        popup.classList.toggle("banner-collection-popup", kind === "banners");
         popup.classList.toggle("list-popup", kind === "list");
         popup.classList.toggle("info-popup", kind === "info");
         popup.classList.toggle("pair-popup", kind === "pair");
@@ -1601,6 +1622,15 @@
         else if (kind === "gacha") showGacha();
         else if (kind === "pair") showPair();
         else if (kind === "backup") showBackup();
+        else if (kind === "banners") {
+          popupTitle.textContent = "banner";
+          const collection = document.createElement('div'); collection.className = 'banner-collection';
+          document.querySelectorAll('.banner-exchange .banner-link').forEach(original => {
+            const link = original.cloneNode(true);
+            if (link.dataset.popup === 'banner') link.onclick = event => { event.preventDefault(); original.click(); };
+            collection.append(link);
+          }); popupBody.replaceChildren(collection);
+        }
         else if (kind === "banner") {
           popupTitle.textContent = "MELTING POINT · 배너 정보";
           const content = document.createElement('section'); content.className = 'banner-info-content';
