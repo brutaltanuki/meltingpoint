@@ -758,7 +758,13 @@
     .credit-drake {left:19%;top:48%;width:35%;height:10%;}
     .credit-nine {left:75%;top:62%;width:22%;height:10%;}
     .credit-yyg {left:29%;top:76%;width:29%;height:10%;}
-</style>
+
+    .aquarium-credit {border-color:rgba(255,255,255,.7);background:rgba(1,8,12,.36);}
+    .aquarium-connections .frame-network {stroke:rgba(255,255,255,.58);stroke-width:.7;}
+    .aquarium-connections .fish-leaders {stroke:rgba(255,255,255,.9);stroke-width:.7;}
+    .aquarium-connections .fish-markers rect {fill:rgba(255,255,255,.06);stroke:#fff;stroke-width:.8;vector-effect:non-scaling-stroke;}
+    .aquarium-credit::after {content:"";position:absolute;left:-2px;top:-2px;width:3px;height:3px;background:#fff;}
+    </style>
 </head>
 <body>
   <main class="page" aria-label="귀상어와 초점 프레임">
@@ -1523,7 +1529,7 @@
           connections.setAttribute("viewBox", "0 0 100 100");
           connections.setAttribute("preserveAspectRatio", "none");
           connections.setAttribute("aria-hidden", "true");
-          connections.innerHTML = '<path d="M52 20 L52 17 L63 17 M43 32 L46 32 M58 45 L52 48 M76 68 L79 65 M34 71 L34 76"/>';
+          connections.innerHTML = '<path class="frame-network" d="M59 13 H83 V24 H60 V28 M46 38 H35 V43 H36.5 V48 M54 53 H68 V58 H86 V62 M75 67 H66 V81 H58"/><path class="fish-leaders" d="M59 17 H65 V14 H70 M46 33 H41 V32 H37 M54 50 H62 V44 H66 M75 68 H72 V65 H66 M43 76 V72 H30 V68"/><g class="fish-markers"><rect x="70" y="12.7" width="3.5" height="2.6"/><rect x="33.5" y="30.7" width="3.5" height="2.6"/><rect x="66" y="41.4" width="3.5" height="2.6"/><rect x="62.5" y="63.7" width="3.5" height="2.6"/><rect x="26.5" y="65.4" width="3.5" height="2.6"/></g>';
           aquarium.append(connections);
           const credits = [
             {account:"@cherrymango", names:["overload", "justice", "vibe", "Syndrome"], position:"cherry"},
